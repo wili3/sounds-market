@@ -104,7 +104,8 @@ public class ImageManager : MonoBehaviour {
 	{
 		Texture2D tex = new Texture2D (widths [index], heights [index]);
 		tex.LoadImage (buffer);
-		products_manager.main_sprites.Add (tex);
+		//products_manager.main_sprites.Add (tex);
+		products_manager.sprites.Add (tex);
 		if(content.currentlyDisplayed(index) > -1 && downloading)
 		{
 			content.setImage(content.currentlyDisplayed(index),index);

@@ -34,6 +34,10 @@ public class ProductsManager : MonoBehaviour {
 		{
 			if(!image_manager.downloading)
 			{
+				if(current_offers_view == my_offers)
+				{
+					Debug.Log("Downloading my offer image");
+				}
 				List<string> key;
 				key = current_offers_view[image_manager.index.ToString()]["key"];
 
@@ -51,6 +55,8 @@ public class ProductsManager : MonoBehaviour {
 		sprites = my_products_sprites;
 		image_manager.downloading = false;
 		content_manager.Reset ();
+		image_manager.index = my_products_sprites.Count;
+		total_products_current_view = my_offers.Count;
 	}
 
 	public void ChangeContextToMain()
@@ -58,6 +64,9 @@ public class ProductsManager : MonoBehaviour {
 		current_offers_view = main_offers;
 		current_textures = main_textures;
 		sprites = main_sprites;
+		image_manager.downloading = false;
 		content_manager.Reset ();
+		image_manager.index = main_sprites.Count;
+		total_products_current_view = main_offers.Count;
 	}
 }
