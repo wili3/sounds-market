@@ -8,7 +8,7 @@ public class InfoView : MonoBehaviour {
 	public float target_position = -259, initial_position, acceleration = 80;
 	public RectTransform rec;
 	public bool closed = true;
-	public int current_index_offer = -1, current_image_shown;
+	public int current_index_offer = -1, current_image_shown, current_user_id;
 	public RawImage current_image;
 	public Text price_text, user_text, rates_text, tittle_text, description_text;
 	public GameObject edit_button;

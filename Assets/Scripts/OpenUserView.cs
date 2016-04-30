@@ -14,7 +14,6 @@ public class OpenUserView : MonoBehaviour ,IPointerClickHandler {
 	{
 		user_view.gameObject.SetActive (true);
 		user_view.OpenIt ("null",false);
-		user_view.LoadUserInfo (info_view.current_index_offer.ToString ());
 	}
 	
 	// Use this for initialization

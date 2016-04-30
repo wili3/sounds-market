@@ -45,7 +45,7 @@ public class Requester : MonoBehaviour {
 
 		request.synchronous = true;
 		request.Send((request_obj)=>{
-			Debug.Log("REQUEST MADE" + request_obj.response.Text);
+			Debug.Log("User info: " + request_obj.response.Text);
 		});
 	}
 
@@ -62,10 +62,13 @@ public class Requester : MonoBehaviour {
 			
 			Hashtable table = (Hashtable)JSON.JsonDecode(request.response.Text, ref result );
 
-			Debug.Log("REQUEST MADE:   " + table["auth_token"] as String);
+			Debug.Log("REQUEST MADE user id:   " + table["user_id"] as String);
 
 			User user = GameObject.FindGameObjectWithTag("Player").GetComponent<User>();
 			user.SaveToken(table["auth_token"] as String);
+			int user_id = (int)table["user_id"];
+			user.SaveUserID(user_id.ToString());
+
 			Application.LoadLevel(1);
 			if(!result)
 			{
@@ -168,6 +171,113 @@ public class Requester : MonoBehaviour {
 				ImageManager image_manager = GameObject.FindGameObjectWithTag("ImageManager").GetComponent<ImageManager>();
 				image_manager.my_products_table = table;
 				image_manager.ParseHashToDicMyProducts();
+			}
+		});
+		yield return request;
+	}
+
+	public static IEnumerator getmyuser(string url, string endpoint, Hashtable parameters = null)
+	{
+		HTTP.Request request = new HTTP.Request("get", url + endpoint,parameters);
+		if (parameters != null) {
+			request = new HTTP.Request ("get", url + endpoint, parameters);
+		} else {
+			request = new HTTP.Request ("get", url + endpoint);
+		}
+		
+		
+		request.SetHeader ("Content-Type", "application/json");
+		request.SetHeader ("X-Auth-Token", PlayerPrefs.GetString("access_token"));
+		
+		request.synchronous = true;
+		request.Send((request_obj)=>{
+			Debug.Log("REQUEST MADE" + request_obj.response.Text);
+			Debug.Log("REQUEST MADE" + request_obj.response.status);
+			
+			bool result = false;
+			
+			Hashtable table = (Hashtable)JSON.JsonDecode(request.response.Text, ref result );
+			
+			if(!result)
+			{
+				//here will go a retry
+				Debug.Log("CANNOT PARSE JSON");
+				return;
+			}
+			else
+			{
+				UsersManager users_manager = GameObject.FindGameObjectWithTag("ProductsManager").GetComponent<UsersManager>();
+				users_manager.ParseHashToDicMyUser(table);
+			}
+		});
+		yield return request;
+	}
+
+	public static void getuser(string url, string endpoint, Hashtable parameters = null)
+	{
+		HTTP.Request request = new HTTP.Request("get", url + endpoint,parameters);
+		if (parameters != null) {
+			request = new HTTP.Request ("get", url + endpoint, parameters);
+		} else {
+			request = new HTTP.Request ("get", url + endpoint);
+		}
+		
+		
+		request.SetHeader ("Content-Type", "application/json");
+		request.SetHeader ("X-Auth-Token", PlayerPrefs.GetString("access_token"));
+		
+		request.synchronous = true;
+		request.Send ();
+		Debug.Log("REQUEST MADE" + request.response.Text);
+		Debug.Log("REQUEST MADE" + request.response.status);
+		
+		bool result = false;
+		
+		Hashtable table = (Hashtable)JSON.JsonDecode(request.response.Text, ref result );
+		
+		if(!result)
+		{
+			//here will go a retry
+			Debug.Log("CANNOT PARSE JSON");
+			return;
+		}
+		else
+		{
+			UsersManager users_manager = GameObject.FindGameObjectWithTag("ProductsManager").GetComponent<UsersManager>();
+			users_manager.ParseHashToDicUser(table);
+		}
+	}
+
+	public static IEnumerator getcategories(string url, Hashtable parameters = null)
+	{
+		HTTP.Request request = new HTTP.Request("get", url + "api/categories",parameters);
+		if (parameters != null) {
+			request = new HTTP.Request ("get", url + "api/categories", parameters);
+		} else {
+			request = new HTTP.Request ("get", url + "api/categories");
+		}
+		
+		
+		request.SetHeader ("Content-Type", "application/json");
+		
+		request.synchronous = true;
+		request.Send((request_obj)=>{
+			Debug.Log("REQUEST MADE" + request_obj.response.Text);
+			Debug.Log("REQUEST MADE" + request_obj.response.status);
+			
+			bool result = false;
+			
+			Hashtable table = (Hashtable)JSON.JsonDecode(request.response.Text, ref result );
+			
+			if(!result)
+			{
+				//here will go a retry
+				Debug.Log("CANNOT PARSE JSON");
+				return;
+			}
+			else
+			{
+				// here will have to call the function of assign the categories
 			}
 		});
 		yield return request;

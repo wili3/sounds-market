@@ -6,7 +6,8 @@ public class User : MonoBehaviour {
 	public string user_name;
 	public string email;
 
-
+	public static string staging_url = "http://sm-staging.victorblasco.me/";
+	public static string local_url = "http://sounds-market.dev/";
 	// Use this for initialization
 	void Start () {
 		DontDestroyOnLoad (this.gameObject);
@@ -26,6 +27,12 @@ public class User : MonoBehaviour {
 		PlayerPrefs.SetString ("access_token", token);
 	}
 
+	public void SaveUserID(string user_id)
+	{
+		PlayerPrefs.SetString ("user_id", user_id);
+		Debug.Log ("SAVED " + user_id);
+	}
+
 	bool CheckToken()
 	{
 		return PlayerPrefs.HasKey("access_token");
@@ -40,5 +47,15 @@ public class User : MonoBehaviour {
 	public void SaveUserName(string _user_name)
 	{
 		user_name = _user_name;
+	}
+
+	public static string stagingURL()
+	{
+		return "http://sm-staging.victorblasco.me/";
+	}
+
+	public static string localURL()
+	{
+		return "http://sounds-market.dev/";
 	}
 }

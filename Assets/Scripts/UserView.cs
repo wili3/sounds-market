@@ -13,13 +13,16 @@ public class UserView : MonoBehaviour {
 	public RawImage profile_pic;
 	public InputField user_name, user_rates, user_mail;
 	public bool my_user = false;
-	public UsersManager user_manager;
 	public RawImage[] stars = new RawImage[5];
 	public ProductsManager products_manager;
+	public UsersManager users_manager;
+	public InfoView info_view;
 	// Use this for initialization
 	void Start () {
 		rec = this.GetComponent<RectTransform> ();
 		initial_position = rec.anchoredPosition.y;
+		users_manager = GameObject.FindGameObjectWithTag ("ProductsManager").GetComponent<UsersManager> ();
+		info_view = GameObject.FindGameObjectWithTag ("InfoView").GetComponent<InfoView> ();
 	}
 	
 	// Update is called once per frame
@@ -55,10 +58,29 @@ public class UserView : MonoBehaviour {
 	{
 		closed = false;
 		side_menu.closed = true;
+
+		if (!is_my_user) {
+			LoadUserInfo ();
+		} else {
+			LoadMyUserInfo();
+		}
 	}
 
-	public void LoadUserInfo(string user_id_string)
+	public void LoadUserInfo()
 	{
-		// Here has to search for the user id by the string given in products manager, then check if the user_id given exists locally and then retrieve the info and set it to the screen output
+		Debug.Log (info_view.current_user_id);
+		users_manager.AskUser (info_view.current_user_id.ToString());
+		Debug.Log (users_manager.other_users_info [info_view.current_user_id].Count);
+		//  HERE I SHOULD ASSIGN EACH FIELD TO THE VARS OF THIS VIEW CLASS
+		Debug.Log (users_manager.other_users_info [info_view.current_user_id]["name"].Count);
+		user_name.text = users_manager.other_users_info [info_view.current_user_id] ["name"] [0];
+		user_mail.text = users_manager.other_users_info [info_view.current_user_id] ["email"] [0];
+	}
+
+	public void LoadMyUserInfo ()
+	{
+		//  HERE I SHOULD ASSIGN EACH FIELD TO THE VARS OF THIS VIEW CLASS
+		user_name.text = users_manager.my_user_info ["name"] [0];
+		user_mail.text = users_manager.my_user_info ["email"] [0];
 	}
 }

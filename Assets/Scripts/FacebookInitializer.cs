@@ -44,7 +44,7 @@ public class FacebookInitializer : MonoBehaviour {
 		table.Add ("access_token", dic ["access_token"]);
 		table_parent.Add ("session", table);
 
-		StartCoroutine(Requester.postsessions ("http://sm-staging.victorblasco.me/", "api/sessions", table_parent)); // works on editor
+		StartCoroutine(Requester.postsessions (User.local_url, "api/sessions", table_parent)); // works on editor
 
 		//user.SaveToken (token);
 		// the token that i want to save will have to be saved in other place

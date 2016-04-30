@@ -13,8 +13,7 @@ public class OpenSelfUserView : MonoBehaviour ,IPointerClickHandler {
 	public void OnPointerClick (PointerEventData eventData) 
 	{
 		user_view.gameObject.SetActive (true);
-		user_view.OpenIt ("null",false);
-		user_view.LoadUserInfo (info_view.current_index_offer.ToString ());
+		user_view.OpenIt ("null",true);
 	}
 	
 	// Use this for initialization

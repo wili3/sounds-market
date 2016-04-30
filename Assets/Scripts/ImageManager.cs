@@ -37,6 +37,9 @@ public class ImageManager : MonoBehaviour {
 	public ArrayList products_to_set;
 	// Use this for initialization
 	void Start () {
+
+		Debug.Log("Current user id: " + PlayerPrefs.GetString("user_id"));
+
 		products_table = new Hashtable ();
 		my_products_table = new Hashtable ();
 		product_keys = new string[products_manager.total_products_current_view];
@@ -49,7 +52,7 @@ public class ImageManager : MonoBehaviour {
 		initialize_fake_data ();
 		set_fake_data ();
 		set_user_fake_data ();
-		client = new AmazonS3Client ("", "", RegionEndpoint.EUWest1);
+		client = new AmazonS3Client ("", RegionEndpoint.EUWest1);
 	}
 
 	void Update()
@@ -265,7 +268,7 @@ public class ImageManager : MonoBehaviour {
 
 	public void set_fake_data ()
 	{
-		StartCoroutine(Requester.getproducts ("http://sm-staging.victorblasco.me/", "api/products", null));
+		StartCoroutine(Requester.getproducts (User.local_url, "api/products", null));
 
 		/*for(int i = 0; i < product_keys.Length; i++)
 		{
@@ -358,7 +361,7 @@ public class ImageManager : MonoBehaviour {
 		user_mail_list.Add (user_mail);
 		dic_inside.Add ("user_mail", user_mail_list);
 
-		user_manager.other_users_info.Add ("21", dic_inside);
+		user_manager.other_users_info.Add (21, dic_inside);
 	}
 
 	private string GetFileHelper ()
@@ -387,7 +390,7 @@ public class ImageManager : MonoBehaviour {
 		table.Add ("price", price);
 
 		ArrayList tags = new ArrayList ();
-		tags.Add (3);
+		tags.Add ("brass_1");
 		//here will have to go something that matches the tags with the categories provided and then sets it to this integer array
 		table.Add ("category_ids", tags);
 
@@ -407,7 +410,7 @@ public class ImageManager : MonoBehaviour {
 		Hashtable table_parent = new Hashtable ();
 		table_parent.Add ("product", table);
 
-		StartCoroutine(Requester.postproduct("http://sm-staging.victorblasco.me/","api/products",table_parent, dic_inside));
+		StartCoroutine(Requester.postproduct(User.local_url,"api/products",table_parent, dic_inside));
 		List<string> user_id_hash_list = table ["user_id"] as List<string>;
 
 	}
@@ -507,7 +510,7 @@ public class ImageManager : MonoBehaviour {
 	}
 	public void RequestMyProducts()
 	{
-		StartCoroutine(Requester.getmyproducts("http://sm-staging.victorblasco.me/","api/products/search?scope=my_products",null));
+		StartCoroutine(Requester.getmyproducts(User.local_url,"api/products/search?user_id=" + PlayerPrefs.GetString("user_id"),null));
 	}
 	public void ParseHashToDicMyProducts()
 	{
