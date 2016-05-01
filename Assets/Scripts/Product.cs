@@ -61,6 +61,7 @@ public class Product : MonoBehaviour, IPointerClickHandler {
 		input_handler.ref_info.current_user_id = int.Parse(products_manager.current_offers_view [index.ToString ()] ["user_id"] [0]);
 		input_handler.ref_info.rates_text.text = "112 valoraciones";
 		input_handler.ref_info.current_image.texture = products_manager.sprites [index];
+
 		if (products_manager.sprites [index].width >= products_manager.sprites [index].height) {
 			input_handler.ref_info.current_image.GetComponent<RectTransform> ().sizeDelta = new Vector2 (input_handler.ref_info.rec.sizeDelta.x, CalculateProportion (input_handler.ref_info.rec.sizeDelta.x, products_manager.sprites [index].width, products_manager.sprites [index].height));
 		}

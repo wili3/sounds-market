@@ -277,8 +277,74 @@ public class Requester : MonoBehaviour {
 			}
 			else
 			{
-				// here will have to call the function of assign the categories
+				GameObject.FindGameObjectWithTag("TagView").GetComponent<TagViewController>().LoadCategories(table);
 			}
+		});
+		yield return request;
+	}
+
+	public static IEnumerator rateuser(string url, string endpoint, Hashtable parameters)
+	{
+		HTTP.Request request = new HTTP.Request("post", url + endpoint,parameters);
+		request.synchronous = true;
+		request.SetHeader ("Content-Type", "application/json");
+		request.SetHeader ("X-Auth-Token", PlayerPrefs.GetString("access_token"));
+		request.Send((request_obj)=>{
+			Debug.Log("REQUEST MADE:   " + request_obj.response.Text.ToString());
+			bool result = false;
+			
+			Hashtable table = (Hashtable)JSON.JsonDecode(request.response.Text, ref result );
+			
+			if(!result)
+			{
+				//here will go a retry
+				Debug.Log("CANNOT PARSE JSON");
+			}
+			GameObject.FindGameObjectWithTag("UserView").GetComponent<UserView>().DisableStars();
+		});
+		yield return request;
+	}
+
+	public static IEnumerator editproduct(string url, string endpoint, Hashtable parameters)
+	{
+		HTTP.Request request = new HTTP.Request("put", url + endpoint,parameters);
+		request.synchronous = true;
+		request.SetHeader ("Content-Type", "application/json");
+		request.SetHeader ("X-Auth-Token", PlayerPrefs.GetString("access_token"));
+		request.Send((request_obj)=>{
+			Debug.Log("REQUEST MADE:   " + request_obj.response.Text.ToString());
+			bool result = false;
+			
+			Hashtable table = (Hashtable)JSON.JsonDecode(request.response.Text, ref result );
+			
+			if(!result)
+			{
+				//here will go a retry
+				Debug.Log("CANNOT PARSE JSON");
+			}
+
+		});
+		yield return request;
+	}
+
+	public static IEnumerator edituser(string url, string endpoint, Hashtable parameters)
+	{
+		HTTP.Request request = new HTTP.Request("put", url + endpoint,parameters);
+		request.synchronous = true;
+		request.SetHeader ("Content-Type", "application/json");
+		request.SetHeader ("X-Auth-Token", PlayerPrefs.GetString("access_token"));
+		request.Send((request_obj)=>{
+			Debug.Log("REQUEST MADE:   " + request_obj.response.Text.ToString());
+			bool result = false;
+			
+			Hashtable table = (Hashtable)JSON.JsonDecode(request.response.Text, ref result );
+			
+			if(!result)
+			{
+				//here will go a retry
+				Debug.Log("CANNOT PARSE JSON");
+			}
+			
 		});
 		yield return request;
 	}

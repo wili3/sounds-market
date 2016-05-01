@@ -275,6 +275,9 @@ public class OfferCreationViewController : MonoBehaviour {
 					// CHECK IF THIS STRING MODIFICATION WORKS
 				}
 			}
+			Dictionary<string,List<string>> dic_inside = new Dictionary<string, List<string>>();
+			dic_inside = ref_products_manager.current_offers_view[index.ToString()];
+			image_manager.ParseDicToHashEdit(dic_inside);
 		}
 		catch
 		{
@@ -322,6 +325,8 @@ public class OfferCreationViewController : MonoBehaviour {
 
 	public void ShowTags (List<string> tags)
 	{
+		tags_list = tags;
+
 		for(int i = 0; i < tag_display_image.Length; i++)
 		{
 			tag_display_image[i].SetActive(false);

@@ -25,6 +25,15 @@ public class UsersManager : MonoBehaviour {
 		List<string> user_id_list = new List<string> ();
 		user_id_list.Add (user_id.ToString());
 
+		try{
+			Hashtable table_ratings = (Hashtable)table ["ratings"];
+			GameObject.FindGameObjectWithTag ("UserView").GetComponent<UserView> ().my_user_ratings_table = table_ratings;
+		}
+		catch
+		{
+			
+		}
+
 		Dictionary<string,List<string>> dic_inside = new Dictionary<string, List<string>>();
 
 		string user_name = string.Concat((string)table["first_name"],string.Concat(" ",(string)table["last_name"]));
@@ -47,9 +56,27 @@ public class UsersManager : MonoBehaviour {
 	{
 		table = (Hashtable)table ["user"];
 		int user_id = (int)table ["id"];
+		try{
+			if (other_users_info [user_id] != null) {
+				other_users_info.Remove(user_id);
+			}
+		}
+		catch{
+
+		}
+
 		List<string> user_id_list = new List<string> ();
 		user_id_list.Add (user_id.ToString());
-		
+
+		try{
+		Hashtable table_ratings = (Hashtable)table ["ratings"];
+		GameObject.FindGameObjectWithTag ("UserView").GetComponent<UserView> ().user_ratings_table = table_ratings;
+		}
+		catch
+		{
+
+		}
+
 		Dictionary<string,List<string>> dic_inside = new Dictionary<string, List<string>>();
 		
 		string user_name = string.Concat((string)table["first_name"],string.Concat(" ",(string)table["last_name"]));

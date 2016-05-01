@@ -6,7 +6,7 @@ using UnityEngine.UI;
 public class TagViewController : MonoBehaviour {
 
 	TagView tag_view;
-	string parent_tag, mid_tag, low_tag;
+	string parent_tag, mid_tag, low_tag, current_first_option, current_second_option;
 	public bool is_search, ready_to_deliver;
 	public Dropdown[] dropdown;
 	public Image image_parent, image_mid, image_low;
@@ -16,13 +16,19 @@ public class TagViewController : MonoBehaviour {
 	public string default_option = "Choose tag";
 	public List<string> dic;
 	public OfferCreationViewController oc_view_controller;
-	// Use this for initialization
+
+	public Hashtable categories_table;
+
+	public Dictionary<string,string> convert_dic, convert_inverse_dic;
+	public Dictionary<string,List<string>> parent_keys;
+	public List<string> first_dropdown_keys;
 	void Start ()
 	{
+		convert_dic = new Dictionary<string, string> ();
+		convert_inverse_dic = new Dictionary<string, string> (); 
+		parent_keys = new Dictionary<string, List<string>> ();
 		tag_view = this.GetComponent<TagView> ();
-		//Dropdown.OptionData new_option = new Dropdown.OptionData (); //build an option for the dropdown,
-		//new_option.text = "bla bla";
-		//dropdown [1].options.Add (new_option);
+
 		Reset ();
 		for(int i = 0 ; i < dropdown.Length; i ++)
 		{
@@ -40,19 +46,36 @@ public class TagViewController : MonoBehaviour {
 	{
 		if (dropdown[0].captionText.text != default_option)
 		{
+			if(dropdown[0].captionText.text != current_first_option)
+			{
+				dropdown[1].interactable = false;
+			}
 			if(!dropdown[1].interactable)
 			{
 				dropdown[1].interactable = true;
+				able_to_submit = true;
+				Debug.Log("hey this is able to submit");
+				current_first_option = dropdown[0].captionText.text;
+				LoadDropdownOptions(1);
+				dropdown[1].captionText.text = default_option;
+				dropdown[1].value = 0;
+				dropdown[2].captionText.text = default_option;
+				dropdown[2].value = 0;
 			}
 			if (dropdown[1].captionText.text != default_option)
 			{
+				if(dropdown[1].captionText.text != current_second_option)
+				{
+					dropdown[2].interactable = false;
+				}
 				if(!dropdown[2].interactable)
 				{
 					dropdown[2].interactable = true;
-				}
-				if (dropdown[2].captionText.text != default_option)
-				{
-					able_to_submit = true;
+					Debug.Log("hey this is able to submit");
+					current_second_option = dropdown[1].captionText.text;
+					LoadDropdownOptions(2);
+					dropdown[2].captionText.text = default_option;
+					dropdown[2].value = 0;
 				}
 			}
 		}
@@ -66,10 +89,12 @@ public class TagViewController : MonoBehaviour {
 	{
 		for(int i = 0 ; i < dropdown.Length; i++)
 		{
+			dropdown[i].value = 0;
 			dropdown[i].captionText.text = default_option;
 			if(i > 0)
 			{
 				dropdown[i].interactable = false;
+				dropdown[i].options.Clear();
 			}
 		}
 		button_search.SetActive (false);
@@ -84,8 +109,8 @@ public class TagViewController : MonoBehaviour {
 		dic.Clear ();
 
 		dic.Add (dropdown [0].captionText.text);
-		dic.Add (dropdown [1].captionText.text);
-		dic.Add (dropdown [2].captionText.text);
+		if(dropdown [1].captionText.text!= default_option)dic.Add (dropdown [1].captionText.text);
+		if(dropdown [2].captionText.text!= default_option)dic.Add (dropdown [2].captionText.text);
 
 		oc_view_controller.ShowTags (dic);
 
@@ -102,5 +127,82 @@ public class TagViewController : MonoBehaviour {
 		else
 			button_add_tags.SetActive (true);
 		last_type = search;
+	}
+
+	public void LoadCategories(Hashtable table)
+	{
+		categories_table = table;
+		LoadConvertCategories ();
+		LoadFirstDropdownOptions ();
+	}
+
+	void LoadConvertCategories()
+	{
+		ArrayList categories = (ArrayList)categories_table ["categories"];
+		ArrayList category_groups = (ArrayList)categories_table ["category_groups"];
+
+		for (int i = 0; i < category_groups.Count; i++)
+		{
+			Hashtable category_group = (Hashtable)category_groups[i];
+			Debug.Log("GROUP ID : " + (string)category_group["id"]);
+			parent_keys.Add((string)category_group["id"],new List<string>());
+			convert_dic.Add((string)category_group["id"],(string)category_group["name"]);
+			convert_inverse_dic.Add((string)category_group["name"],(string)category_group["id"]);
+			first_dropdown_keys.Add((string)category_group["id"]);
+		}
+
+		for(int i = 0; i < categories.Count; i ++)
+		{
+			Hashtable category = (Hashtable)categories[i];
+			Debug.Log(" ID : " + (string)category["id"]);
+			try{
+			parent_keys.Add((string)category["id"], new List<string>());
+			convert_dic.Add((string)category["id"],(string)category["name"]);
+			convert_inverse_dic.Add((string)category["name"],(string)category["id"]);
+			}
+			catch{
+
+			}
+			parent_keys[(string)category["group_id"]].Add((string)category["id"]);
+		}
+	}
+
+	void LoadFirstDropdownOptions()
+	{
+		dropdown [0].options.Clear ();
+
+		Dropdown.OptionData new_option_default = new Dropdown.OptionData ();
+		new_option_default.text = default_option;
+		dropdown [0].options.Add (new_option_default);
+		//Dropdown.OptionData new_option = new Dropdown.OptionData (); //build an option for the dropdown,
+		//new_option.text = "bla bla";
+		//dropdown [1].options.Add (new_option);
+		for(int i = 0; i < first_dropdown_keys.Count; i++)
+		{
+			Dropdown.OptionData new_option = new Dropdown.OptionData ();
+			new_option.text = convert_dic[first_dropdown_keys[i]];
+			dropdown[0].options.Add(new_option);
+		}
+	}
+
+	void LoadDropdownOptions(int index)
+	{
+		dropdown [index].options.Clear ();
+		string parent_option = dropdown [index - 1].captionText.text;
+
+		Dropdown.OptionData new_option_default = new Dropdown.OptionData ();
+		new_option_default.text = default_option;
+		dropdown [index].options.Add (new_option_default);
+
+		if (parent_keys [convert_inverse_dic [parent_option]].Count != null) 
+		if (parent_keys [convert_inverse_dic [parent_option]].Count > 0) {
+			for (int i = 0; i < parent_keys [convert_inverse_dic [parent_option]].Count; i++) {
+				Dropdown.OptionData new_option = new Dropdown.OptionData ();
+				new_option.text = convert_dic[parent_keys [convert_inverse_dic [parent_option]] [i]];
+				dropdown [index].options.Add (new_option);
+			}
+		} else {
+			dropdown[index].interactable = false;
+		}
 	}
 }

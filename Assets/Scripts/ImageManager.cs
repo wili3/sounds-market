@@ -28,6 +28,7 @@ public class ImageManager : MonoBehaviour {
 	public contentmanager content;
 	public ProductsManager products_manager;
 	public InfoView info_view;
+	public TagViewController tag_view_controller;
 
 	public List<string> images_to_upload;
 	public Dictionary<string,string> product_detail_images = new Dictionary<string, string>();
@@ -116,6 +117,7 @@ public class ImageManager : MonoBehaviour {
 
 		downloading = false;
 		index += 1;
+		products_manager.ChangeContextToCurrent ();
 		yield return null;
 	}
 
@@ -269,8 +271,8 @@ public class ImageManager : MonoBehaviour {
 	public void set_fake_data ()
 	{
 		StartCoroutine(Requester.getproducts (User.local_url, "api/products", null));
-
-		/*for(int i = 0; i < product_keys.Length; i++)
+		/*
+		for(int i = 0; i < product_keys.Length; i++)
 		{
 			Dictionary<string,List<string>> dic_inside = new Dictionary<string, List<string>>();
 
@@ -390,7 +392,12 @@ public class ImageManager : MonoBehaviour {
 		table.Add ("price", price);
 
 		ArrayList tags = new ArrayList ();
-		tags.Add ("brass_1");
+
+		for (int i = 0; i < tag_view_controller.dic.Count; i++) 
+		{
+			tags.Add(tag_view_controller.convert_inverse_dic[tag_view_controller.dic[i]]);
+			Debug.Log(tag_view_controller.convert_inverse_dic[tag_view_controller.dic[i]]);
+		}
 		//here will have to go something that matches the tags with the categories provided and then sets it to this integer array
 		table.Add ("category_ids", tags);
 
@@ -413,6 +420,49 @@ public class ImageManager : MonoBehaviour {
 		StartCoroutine(Requester.postproduct(User.local_url,"api/products",table_parent, dic_inside));
 		List<string> user_id_hash_list = table ["user_id"] as List<string>;
 
+	}
+
+	public void ParseDicToHashEdit(Dictionary<string,List<string>> dic_inside)
+	{
+		Hashtable table = new Hashtable();
+		string title = dic_inside ["tittle"][0];
+		table.Add ("title", title);
+		
+		string description = dic_inside ["desc"][0];
+		table.Add ("description", description);
+		
+		string price = dic_inside["price"][0];
+		table.Add ("price", price);
+		
+		ArrayList tags = new ArrayList ();
+		
+		for (int i = 0; i < tag_view_controller.dic.Count; i++) 
+		{
+			tags.Add(tag_view_controller.convert_inverse_dic[tag_view_controller.dic[i]]);
+			Debug.Log(tag_view_controller.convert_inverse_dic[tag_view_controller.dic[i]]);
+		}
+		//here will have to go something that matches the tags with the categories provided and then sets it to this integer array
+		table.Add ("category_ids", tags);
+		
+		ArrayList images_list = new ArrayList ();
+		for (int i = 0; i < dic_inside["width"].Count; i++) 
+		{
+			Hashtable images_table = new Hashtable ();
+			images_table.Add ("key",dic_inside["key"][i]);
+			Debug.Log(dic_inside["width"].Count+  "     i: " + i.ToString());
+			images_table.Add ("width",  dic_inside["width"][i]);
+			images_table.Add ("height", dic_inside["height"][i]);
+			images_list.Add (images_table);
+		}
+		
+		table.Add ("images", images_list);
+		
+		Hashtable table_parent = new Hashtable ();
+		table_parent.Add ("product", table);
+		
+		StartCoroutine(Requester.editproduct(User.local_url,"api/products",table_parent));
+		List<string> user_id_hash_list = table ["user_id"] as List<string>;
+		
 	}
 
 	public void ParseHashToDic()
@@ -564,8 +614,13 @@ public class ImageManager : MonoBehaviour {
 			dic_inside.Add("price",price_list);
 			
 			List<string> tags = new List<string>();
-			tags.Add("guitarra");
-			tags.Add("classica");
+			ArrayList tags_list = (ArrayList)table["category_ids"];
+			for(int j = 0; j < tags_list.Count; j++)
+			{
+				Debug.Log("TAG: "+ (string)tags_list[j]);
+				tags.Add((string)tags_list[j]);
+			}
+
 			dic_inside.Add("tags",tags);
 			
 			List<string> seller_list = new List<string>();

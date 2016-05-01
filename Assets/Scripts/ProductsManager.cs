@@ -69,4 +69,11 @@ public class ProductsManager : MonoBehaviour {
 		image_manager.index = main_sprites.Count;
 		total_products_current_view = main_offers.Count;
 	}
+
+	public void ChangeContextToCurrent()
+	{
+		content_manager.Reset ();
+	}
+
+
 }
