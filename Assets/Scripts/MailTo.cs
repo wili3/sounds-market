@@ -5,21 +5,20 @@ using UnityEngine.UI;
 using UnityEngine.EventSystems;
 using UnityEngine.Events;
 
-public class ConnectFacebookButton : MonoBehaviour ,IPointerClickHandler {
+public class MailTo : MonoBehaviour ,IPointerClickHandler {
 
-	public FacebookInitializer fb_initializer;
+	public InfoView info_view;
 
 	public void OnPointerClick (PointerEventData eventData) 
 	{
-		fb_initializer.CallFBLogin ();
-		Debug.Log ("hola");
+		SendEmail (info_view.current_email);
 	}
-
-	void SendEmail ()
+	
+	void SendEmail (string _email)
 	{
-		string email = "guillempsx2@hotmail.com";
-		string subject = MyEscapeURL("My Subject");
-		string body = MyEscapeURL("My Body\r\nFull of non-escaped chars");
+		string email = _email;
+		string subject = MyEscapeURL("");
+		string body = MyEscapeURL("");
 		Application.OpenURL("mailto:" + email + "?subject=" + subject + "&body=" + body);
 	}
 	string MyEscapeURL (string url)
@@ -30,3 +29,4 @@ public class ConnectFacebookButton : MonoBehaviour ,IPointerClickHandler {
 	// Use this for initialization
 	
 }
+

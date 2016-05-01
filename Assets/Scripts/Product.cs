@@ -59,6 +59,9 @@ public class Product : MonoBehaviour, IPointerClickHandler {
 		input_handler.ref_info.tittle_text.text = products_manager.current_offers_view [index.ToString ()] ["tittle"] [0];
 		input_handler.ref_info.user_text.text = products_manager.current_offers_view [index.ToString ()] ["seller"] [0];
 		input_handler.ref_info.current_user_id = int.Parse(products_manager.current_offers_view [index.ToString ()] ["user_id"] [0]);
+		input_handler.ref_info.user_text.text =  products_manager.current_offers_view [index.ToString ()] ["email"] [0];
+		input_handler.ref_info.current_email =   products_manager.current_offers_view [index.ToString ()] ["email"] [0];
+
 		input_handler.ref_info.rates_text.text = "112 valoraciones";
 		input_handler.ref_info.current_image.texture = products_manager.sprites [index];
 

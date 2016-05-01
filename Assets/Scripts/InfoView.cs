@@ -14,6 +14,7 @@ public class InfoView : MonoBehaviour {
 	public GameObject edit_button;
 	public List<Texture2D>  current_tex_list;
 	public GameObject right_arrow,left_arrow;
+	public string current_email;
 	// Use this for initialization
 	void Start () 
 	{
