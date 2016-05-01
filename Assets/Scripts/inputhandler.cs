@@ -51,6 +51,8 @@ public class inputhandler : MonoBehaviour {
 						ref_creation.clear_button.gameObject.SetActive(true);
 						ref_creation.edit_button.gameObject.SetActive(false);
 
+						Debug.Log("HOLA PASO POR AQUI");
+
 						ref_creation.gameObject.SetActive(true);
 					}
 				}

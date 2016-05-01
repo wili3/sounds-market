@@ -12,7 +12,7 @@ public class ProductEditor : MonoBehaviour {
 	// Use this for initialization
 	public void LoadCreatedOffer(int index)
 	{
-		oc_viewcontroller.clear_button.gameObject.SetActive(true);
+		oc_viewcontroller.clear_button.gameObject.SetActive(false);
 		oc_viewcontroller.edit_button.gameObject.SetActive(true);
 		oc_viewcontroller.gameObject.SetActive (true);
 		oc_viewcontroller.closed = false;
