@@ -37,7 +37,7 @@ public class TagViewController : MonoBehaviour {
 		}
 
 		dic = new List<string> ();
-		StartCoroutine(Requester.getcategories(User.local_url, null));
+		StartCoroutine(Requester.getcategories(User.current_url(), null));
 
 		// TODO: I HAVE TO PUT ALL THE CATEGORY GROUPS EXISTING IN THE PDF INTO THE YAML THEN SET EVERY CATEGORY INSIDE THEIR GROUP, THEN PARSE FIRST THE PARENT CATEGORIES AND CREATE A DICTIONARY WITH A KEY FOREACH PARENT CATEGORY AND SET INSIDE THAT DICTIONARY ECAH KEY
 	}

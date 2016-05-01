@@ -50,7 +50,7 @@ public class StarScript : MonoBehaviour ,IPointerClickHandler {
 		table_child.Add("points",num);
 		table.Add("rating",table_child);
 
-		StartCoroutine(Requester.rateuser(User.local_url,"api/ratings",table));
+		StartCoroutine(Requester.rateuser(User.current_url(),"api/ratings",table));
 	}
 
 	public void Reset()

@@ -10,6 +10,7 @@ public class OfferCreationViewController : MonoBehaviour {
 	public InfoView info_view;
 	public ImageManager image_manager;
 	public ProductsManager ref_products_manager;
+	public TagViewController tag_view_controller;
 	public float target_position = -259, initial_position, acceleration = 80;
 	public RectTransform rec;
 	public bool closed = true;
@@ -229,7 +230,15 @@ public class OfferCreationViewController : MonoBehaviour {
 			ref_products_manager.current_offers_view[index.ToString()]["desc"][0] = input_fields[1].text;
 			ref_products_manager.current_offers_view[index.ToString()]["price"][0] = input_fields[2].text;
 			ref_products_manager.current_offers_view[index.ToString()]["email"][0] = input_fields[3].text;
-			
+
+			List<string> temp_list = new List<string>();
+
+			for(int i = 0; i < tag_view_controller.dic.Count; i++)
+			{
+				temp_list.Add(tag_view_controller.convert_inverse_dic[ tag_view_controller.dic[i]]);
+			}
+
+		    ref_products_manager.current_offers_view[index.ToString()]["tags"] = temp_list;
 			//check images, first if one has been added, then if one of the previous added has been changed
 			
 			int total_images_before = ref_products_manager.current_textures[index.ToString()].Count;

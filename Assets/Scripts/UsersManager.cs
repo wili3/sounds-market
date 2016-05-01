@@ -12,7 +12,7 @@ public class UsersManager : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		StartCoroutine(Requester.getmyuser(User.local_url,"api/users/" + PlayerPrefs.GetString("user_id"),null));
+		StartCoroutine(Requester.getmyuser(User.current_url(),"api/users/" + PlayerPrefs.GetString("user_id"),null));
 		//first create my user info
 		//then i will have to initialize the user array and when the user taps the button ver perfil assign the user to the list where the offer tells and download all the info and then display it
 	
@@ -97,6 +97,6 @@ public class UsersManager : MonoBehaviour {
 
 	public void AskUser(string user_id)
 	{
-		Requester.getuser(User.local_url,"api/users/" + user_id,null);
+		Requester.getuser(User.current_url(),"api/users/" + user_id,null);
 	}
 }

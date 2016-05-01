@@ -15,5 +15,6 @@ public class EditCreation : MonoBehaviour, IPointerClickHandler {
 	public void OnPointerClick (PointerEventData eventData) 
 	{
 		ref_creation.checkSubmitabbleWithIndex ();
+		GameObject.FindGameObjectWithTag ("InfoView").GetComponent<InfoView> ().closed = true;
 	}
 }

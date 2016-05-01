@@ -53,7 +53,7 @@ public class ImageManager : MonoBehaviour {
 		initialize_fake_data ();
 		set_fake_data ();
 		set_user_fake_data ();
-		client = new AmazonS3Client ("", RegionEndpoint.EUWest1);
+		client = new AmazonS3Client ("AKIAIEWICIEKYTSP4W4Q", "qYZx03oNSXpEGGcMEET+1rK8OkwGNQgncM2TMPgd", RegionEndpoint.EUWest1);
 	}
 
 	void Update()
@@ -270,7 +270,7 @@ public class ImageManager : MonoBehaviour {
 
 	public void set_fake_data ()
 	{
-		StartCoroutine(Requester.getproducts (User.local_url, "api/products", null));
+		StartCoroutine(Requester.getproducts (User.current_url(), "api/products", null));
 		/*
 		for(int i = 0; i < product_keys.Length; i++)
 		{
@@ -417,7 +417,7 @@ public class ImageManager : MonoBehaviour {
 		Hashtable table_parent = new Hashtable ();
 		table_parent.Add ("product", table);
 
-		StartCoroutine(Requester.postproduct(User.local_url,"api/products",table_parent, dic_inside));
+		StartCoroutine(Requester.postproduct(User.current_url(),"api/products",table_parent, dic_inside));
 		List<string> user_id_hash_list = table ["user_id"] as List<string>;
 
 	}
@@ -460,7 +460,7 @@ public class ImageManager : MonoBehaviour {
 		Hashtable table_parent = new Hashtable ();
 		table_parent.Add ("product", table);
 		
-		StartCoroutine(Requester.editproduct(User.local_url,"api/products",table_parent));
+		StartCoroutine(Requester.editproduct(User.current_url(),"api/products/" + dic_inside["id"][0],table_parent));
 		List<string> user_id_hash_list = table ["user_id"] as List<string>;
 		
 	}
@@ -506,6 +506,10 @@ public class ImageManager : MonoBehaviour {
 			desc_list.Add(table["description"].ToString());
 			dic_inside.Add("desc", desc_list);
 
+			List<string> id_list = new List<string>();
+			id_list.Add(table["id"].ToString());
+			dic_inside.Add("id", id_list);
+
 			Debug.Log("set all data *******");
 
 			List<string> price_list = new List<string>();
@@ -518,8 +522,12 @@ public class ImageManager : MonoBehaviour {
 			dic_inside.Add("price",price_list);
 
 			List<string> tags = new List<string>();
-			tags.Add("guitarra");
-			tags.Add("classica");
+			ArrayList tags_list = (ArrayList)table["category_ids"];
+			for(int j = 0; j < tags_list.Count; j++)
+			{
+				tags.Add((string)tags_list[j]);
+			}
+
 			dic_inside.Add("tags",tags);
 
 			List<string> seller_list = new List<string>();
@@ -560,7 +568,7 @@ public class ImageManager : MonoBehaviour {
 	}
 	public void RequestMyProducts()
 	{
-		StartCoroutine(Requester.getmyproducts(User.local_url,"api/products/search?user_id=" + PlayerPrefs.GetString("user_id"),null));
+		StartCoroutine(Requester.getmyproducts(User.current_url(),"api/products/search?user_id=" + PlayerPrefs.GetString("user_id"),null));
 	}
 	public void ParseHashToDicMyProducts()
 	{
@@ -601,7 +609,11 @@ public class ImageManager : MonoBehaviour {
 			List<string> desc_list = new List<string>();
 			desc_list.Add(table["description"].ToString());
 			dic_inside.Add("desc", desc_list);
-			
+
+			List<string> id_list = new List<string>();
+			id_list.Add(table["id"].ToString());
+			dic_inside.Add("id", id_list);
+
 			Debug.Log("set all data *******");
 			
 			List<string> price_list = new List<string>();

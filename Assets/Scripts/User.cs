@@ -8,8 +8,11 @@ public class User : MonoBehaviour {
 
 	public static string staging_url = "http://sm-staging.victorblasco.me/";
 	public static string local_url = "http://sounds-market.dev/";
+	public static bool local = false;
+	public bool is_local;
 	// Use this for initialization
 	void Start () {
+		local = is_local;
 		DontDestroyOnLoad (this.gameObject);
 		if (CheckToken()) 
 		{
@@ -19,6 +22,16 @@ public class User : MonoBehaviour {
 				Debug.Log("ALREADY HAVE TOKEN : " + PlayerPrefs.GetString ("access_token"));
 				return;
 			}
+		}
+	}
+
+	public static string current_url()
+	{
+		if (local) {
+			return local_url;
+		}
+		else {
+			return staging_url;
 		}
 	}
 
