@@ -48,6 +48,9 @@ public class inputhandler : MonoBehaviour {
 					if(ref_info.closed)
 					{
 						ref_creation.closed = false;
+						ref_creation.clear_button.gameObject.SetActive(true);
+						ref_creation.edit_button.gameObject.SetActive(false);
+
 						ref_creation.gameObject.SetActive(true);
 					}
 				}

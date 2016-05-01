@@ -422,12 +422,16 @@ public class ImageManager : MonoBehaviour {
 
 	}
 
-	public void ParseDicToHashEdit(Dictionary<string,List<string>> dic_inside)
+	public void ParseDicToHashEdit(Dictionary<string,List<string>> dic_inside, bool sold)
 	{
 		Hashtable table = new Hashtable();
 		string title = dic_inside ["tittle"][0];
 		table.Add ("title", title);
-		
+
+		if (sold) {
+			table.Add("sold",true);
+		}
+
 		string description = dic_inside ["desc"][0];
 		table.Add ("description", description);
 		

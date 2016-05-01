@@ -23,6 +23,7 @@ public class OfferCreationViewController : MonoBehaviour {
 	public InputField[] input_fields = new InputField[4];
 	public Button clear_button;
 	public Button submit_button;
+	public Button sold_button;
 
 	public int index_to_set;
 
@@ -39,6 +40,8 @@ public class OfferCreationViewController : MonoBehaviour {
 
 	public GameObject[] tag_display_image = new GameObject[3];
 	public List<string> tags_list;
+
+	public Button edit_button;
 	// Use this for initialization
 	void Start () 
 	{
@@ -101,9 +104,9 @@ public class OfferCreationViewController : MonoBehaviour {
 
 	}
 
-	public void checkSubmitabbleWithIndex()
+	public void checkSubmitabbleWithIndex(bool sold)
 	{
-		Submit_with_index(info_view.current_index_offer);
+		Submit_with_index(info_view.current_index_offer, sold);
 		clearCreation();
 	}
 
@@ -221,11 +224,12 @@ public class OfferCreationViewController : MonoBehaviour {
 		closed = true;
 	}
 
-	private void Submit_with_index (int index_to_submit)
+	private void Submit_with_index (int index_to_submit, bool sold)
 	{
 		int index = index_to_submit;
 		try
 		{
+
 			ref_products_manager.current_offers_view[index.ToString()]["tittle"][0] = input_fields[0].text;
 			ref_products_manager.current_offers_view[index.ToString()]["desc"][0] = input_fields[1].text;
 			ref_products_manager.current_offers_view[index.ToString()]["price"][0] = input_fields[2].text;
@@ -286,7 +290,7 @@ public class OfferCreationViewController : MonoBehaviour {
 			}
 			Dictionary<string,List<string>> dic_inside = new Dictionary<string, List<string>>();
 			dic_inside = ref_products_manager.current_offers_view[index.ToString()];
-			image_manager.ParseDicToHashEdit(dic_inside);
+			image_manager.ParseDicToHashEdit(dic_inside, sold);
 		}
 		catch
 		{

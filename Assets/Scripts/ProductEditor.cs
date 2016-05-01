@@ -12,6 +12,8 @@ public class ProductEditor : MonoBehaviour {
 	// Use this for initialization
 	public void LoadCreatedOffer(int index)
 	{
+		oc_viewcontroller.clear_button.gameObject.SetActive(true);
+		oc_viewcontroller.edit_button.gameObject.SetActive(true);
 		oc_viewcontroller.gameObject.SetActive (true);
 		oc_viewcontroller.closed = false;
 		oc_viewcontroller.input_fields [0].text = products_manager.current_offers_view [index.ToString ()] ["tittle"][0];
