@@ -53,7 +53,7 @@ public class ImageManager : MonoBehaviour {
 		initialize_fake_data ();
 		set_fake_data ();
 		set_user_fake_data ();
-		client = new AmazonS3Client ("AKIAIEWICIEKYTSP4W4Q", "qYZx03oNSXpEGGcMEET+1rK8OkwGNQgncM2TMPgd", RegionEndpoint.EUWest1);
+		client = new AmazonS3Client ("", RegionEndpoint.EUWest1);
 	}
 
 	void Update()
