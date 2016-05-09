@@ -15,6 +15,11 @@ public class Requester : MonoBehaviour {
 		request.synchronous = true;
 		request.SetHeader ("Content-Type", "application/json");
 		request.SetHeader ("X-Auth-Token", PlayerPrefs.GetString("access_token"));
+		if (PlayerPrefs.GetString ("Latitude") != null) {
+			request.SetHeader ("X-Lat", PlayerPrefs.GetString ("Latitude"));
+			request.SetHeader ("X-Lng", PlayerPrefs.GetString ("Longitude"));
+		}
+
 		request.Send((request_obj)=>{
 			Debug.Log("REQUEST MADE" + request_obj.response.Text);
 
@@ -42,6 +47,11 @@ public class Requester : MonoBehaviour {
 		
 		request.SetHeader ("Content-Type", "application/json");
 		request.SetHeader ("X-Auth-Token", PlayerPrefs.GetString("access_token"));
+		if (PlayerPrefs.GetString ("Latitude") != null) {
+			request.SetHeader ("X-Lat", PlayerPrefs.GetString ("Latitude"));
+			request.SetHeader ("X-Lng", PlayerPrefs.GetString ("Longitude"));
+		}
+		request.SetHeader ("X-Lng", PlayerPrefs.GetString ("Longitude"));
 
 		request.synchronous = true;
 		request.Send((request_obj)=>{
@@ -54,6 +64,12 @@ public class Requester : MonoBehaviour {
 		HTTP.Request request = new HTTP.Request("post", url + endpoint,parameters);
 		request.synchronous = true;
 		request.SetHeader ("Content-Type", "application/json");
+		if (PlayerPrefs.GetString ("Latitude") != null) {
+			request.SetHeader ("X-Lat", PlayerPrefs.GetString ("Latitude"));
+			request.SetHeader ("X-Lng", PlayerPrefs.GetString ("Longitude"));
+		}
+		request.SetHeader ("X-Lng", PlayerPrefs.GetString ("Longitude"));
+
 		request.Send((request_obj)=>{
 			Debug.Log("REQUEST MADE:   " + request_obj.protocol.ToString());
 			Debug.Log("REQUEST MADE:   " + request_obj.response.status.ToString());
@@ -85,6 +101,12 @@ public class Requester : MonoBehaviour {
 		request.synchronous = true;
 		request.SetHeader ("Content-Type", "application/json");
 		request.SetHeader ("X-Auth-Token", PlayerPrefs.GetString("access_token"));
+		if (PlayerPrefs.GetString ("Latitude") != null) {
+			request.SetHeader ("X-Lat", PlayerPrefs.GetString ("Latitude"));
+			request.SetHeader ("X-Lng", PlayerPrefs.GetString ("Longitude"));
+		}
+		request.SetHeader ("X-Lng", PlayerPrefs.GetString ("Longitude"));
+
 		request.Send((request_obj)=>{
 			Debug.Log("REQUEST MADE:   " + request_obj.response.Text.ToString());
 			bool result = false;
@@ -115,6 +137,11 @@ public class Requester : MonoBehaviour {
 		
 		request.SetHeader ("Content-Type", "application/json");
 		request.SetHeader ("X-Auth-Token", PlayerPrefs.GetString("access_token"));
+		if (PlayerPrefs.GetString ("Latitude") != null) {
+			request.SetHeader ("X-Lat", PlayerPrefs.GetString ("Latitude"));
+			request.SetHeader ("X-Lng", PlayerPrefs.GetString ("Longitude"));
+		}
+		request.SetHeader ("X-Lng", PlayerPrefs.GetString ("Longitude"));
 		
 		request.synchronous = true;
 		request.Send((request_obj)=>{
@@ -152,6 +179,11 @@ public class Requester : MonoBehaviour {
 		
 		request.SetHeader ("Content-Type", "application/json");
 		request.SetHeader ("X-Auth-Token", PlayerPrefs.GetString("access_token"));
+		if (PlayerPrefs.GetString ("Latitude") != null) {
+			request.SetHeader ("X-Lat", PlayerPrefs.GetString ("Latitude"));
+			request.SetHeader ("X-Lng", PlayerPrefs.GetString ("Longitude"));
+		}
+		request.SetHeader ("X-Lng", PlayerPrefs.GetString ("Longitude"));
 		
 		request.synchronous = true;
 		request.Send((request_obj)=>{
@@ -190,6 +222,11 @@ public class Requester : MonoBehaviour {
 		
 		request.SetHeader ("Content-Type", "application/json");
 		request.SetHeader ("X-Auth-Token", PlayerPrefs.GetString("access_token"));
+		if (PlayerPrefs.GetString ("Latitude") != null) {
+			request.SetHeader ("X-Lat", PlayerPrefs.GetString ("Latitude"));
+			request.SetHeader ("X-Lng", PlayerPrefs.GetString ("Longitude"));
+		}
+		request.SetHeader ("X-Lng", PlayerPrefs.GetString ("Longitude"));
 		
 		request.synchronous = true;
 		request.Send((request_obj)=>{
@@ -227,6 +264,11 @@ public class Requester : MonoBehaviour {
 		
 		request.SetHeader ("Content-Type", "application/json");
 		request.SetHeader ("X-Auth-Token", PlayerPrefs.GetString("access_token"));
+		if (PlayerPrefs.GetString ("Latitude") != null) {
+			request.SetHeader ("X-Lat", PlayerPrefs.GetString ("Latitude"));
+			request.SetHeader ("X-Lng", PlayerPrefs.GetString ("Longitude"));
+		}
+		request.SetHeader ("X-Lng", PlayerPrefs.GetString ("Longitude"));
 		
 		request.synchronous = true;
 		request.Send ();
@@ -261,6 +303,11 @@ public class Requester : MonoBehaviour {
 		
 		
 		request.SetHeader ("Content-Type", "application/json");
+		if (PlayerPrefs.GetString ("Latitude") != null) {
+			request.SetHeader ("X-Lat", PlayerPrefs.GetString ("Latitude"));
+			request.SetHeader ("X-Lng", PlayerPrefs.GetString ("Longitude"));
+		}
+		request.SetHeader ("X-Lng", PlayerPrefs.GetString ("Longitude"));
 		
 		request.synchronous = true;
 		request.Send((request_obj)=>{
@@ -291,6 +338,12 @@ public class Requester : MonoBehaviour {
 		request.synchronous = true;
 		request.SetHeader ("Content-Type", "application/json");
 		request.SetHeader ("X-Auth-Token", PlayerPrefs.GetString("access_token"));
+		if (PlayerPrefs.GetString ("Latitude") != null) {
+			request.SetHeader ("X-Lat", PlayerPrefs.GetString ("Latitude"));
+			request.SetHeader ("X-Lng", PlayerPrefs.GetString ("Longitude"));
+		}
+		request.SetHeader ("X-Lng", PlayerPrefs.GetString ("Longitude"));
+
 		request.Send((request_obj)=>{
 			Debug.Log("REQUEST MADE:   " + request_obj.response.Text.ToString());
 			bool result = false;
@@ -313,6 +366,12 @@ public class Requester : MonoBehaviour {
 		request.synchronous = true;
 		request.SetHeader ("Content-Type", "application/json");
 		request.SetHeader ("X-Auth-Token", PlayerPrefs.GetString("access_token"));
+		if (PlayerPrefs.GetString ("Latitude") != null) {
+			request.SetHeader ("X-Lat", PlayerPrefs.GetString ("Latitude"));
+			request.SetHeader ("X-Lng", PlayerPrefs.GetString ("Longitude"));
+		}
+		request.SetHeader ("X-Lng", PlayerPrefs.GetString ("Longitude"));
+
 		request.Send((request_obj)=>{
 			Debug.Log("REQUEST MADE:   " + request_obj.response.Text.ToString());
 			bool result = false;
@@ -335,6 +394,12 @@ public class Requester : MonoBehaviour {
 		request.synchronous = true;
 		request.SetHeader ("Content-Type", "application/json");
 		request.SetHeader ("X-Auth-Token", PlayerPrefs.GetString("access_token"));
+		if (PlayerPrefs.GetString ("Latitude") != null) {
+			request.SetHeader ("X-Lat", PlayerPrefs.GetString ("Latitude"));
+			request.SetHeader ("X-Lng", PlayerPrefs.GetString ("Longitude"));
+		}
+		request.SetHeader ("X-Lng", PlayerPrefs.GetString ("Longitude"));
+
 		request.Send((request_obj)=>{
 			Debug.Log("REQUEST MADE:   " + request_obj.response.Text.ToString());
 			bool result = false;
