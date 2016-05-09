@@ -14,7 +14,7 @@ public class FacebookInitializer : MonoBehaviour {
 	public User user;
 	// Use this for initialization
 	void Start () {
-		PlayerPrefs.DeleteAll ();
+		//PlayerPrefs.DeleteAll ();
 		FB.Init ("750504335081382");
 		DontDestroyOnLoad (this.gameObject);
 		user = GameObject.FindGameObjectWithTag ("Player").GetComponent<User>();

@@ -237,9 +237,9 @@ public class OfferCreationViewController : MonoBehaviour {
 
 			List<string> temp_list = new List<string>();
 
-			for(int i = 0; i < tag_view_controller.dic.Count; i++)
+			for(int i = 0; i < tags_list.Count; i++)
 			{
-				temp_list.Add(tag_view_controller.convert_inverse_dic[ tag_view_controller.dic[i]]);
+				temp_list.Add(tag_view_controller.convert_inverse_dic[ tags_list[i]]);
 			}
 
 		    ref_products_manager.current_offers_view[index.ToString()]["tags"] = temp_list;

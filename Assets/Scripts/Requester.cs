@@ -125,15 +125,17 @@ public class Requester : MonoBehaviour {
 			
 			Hashtable table = (Hashtable)JSON.JsonDecode(request.response.Text, ref result );
 			
+
+			ImageManager image_manager = GameObject.FindGameObjectWithTag("ImageManager").GetComponent<ImageManager>();
+			image_manager.products_table = table;
+			image_manager.checkhash = true;
+
 			if(!result)
 			{
 				//here will go a retry
 				Debug.Log("CANNOT PARSE JSON");
 				return;
 			}
-			ImageManager image_manager = GameObject.FindGameObjectWithTag("ImageManager").GetComponent<ImageManager>();
-			image_manager.products_table = table;
-			image_manager.checkhash = true;
 		});
 		yield return request;
 	}

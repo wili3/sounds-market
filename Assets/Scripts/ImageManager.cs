@@ -53,7 +53,7 @@ public class ImageManager : MonoBehaviour {
 		initialize_fake_data ();
 		set_fake_data ();
 		set_user_fake_data ();
-		client = new AmazonS3Client ("", RegionEndpoint.EUWest1);
+		client = new AmazonS3Client ("AKIAJOWBHJ5UX6M3DPAQ", "xsJZP9UIEMk/VaEF2OXiqoKnYagHAAgMekbBblIl", RegionEndpoint.EUWest1);
 	}
 
 	void Update()
@@ -471,6 +471,10 @@ public class ImageManager : MonoBehaviour {
 
 	public void ParseHashToDic()
 	{
+		products_manager.ChangeContextToMain ();
+		products_manager.main_offers.Clear ();
+		products_manager.main_sprites.Clear ();
+		products_manager.main_textures.Clear ();
 		Dictionary<string,List<string>> dic_inside = new Dictionary<string, List<string>>();
 		/*
 		dic_inside.Add ("num_of_pics", num_of_pics_list);

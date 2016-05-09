@@ -20,8 +20,7 @@ public class ProductEditor : MonoBehaviour {
 		oc_viewcontroller.input_fields [1].text = products_manager.current_offers_view [index.ToString ()] ["desc"][0];
 		oc_viewcontroller.input_fields [3].text =products_manager.current_offers_view [index.ToString ()] ["email"][0];
 		oc_viewcontroller.input_fields [2].text =products_manager.current_offers_view [index.ToString ()] ["price"][0];
-		Debug.Log ("tags count in editor: " + products_manager.current_offers_view [index.ToString ()] ["tags"][0]);
-		Debug.Log ("tags count in editor: " + products_manager.current_offers_view [index.ToString ()] ["tags"][1]);
+
 		List<string> temp_tags = products_manager.current_offers_view [index.ToString ()] ["tags"];
 
 		for (int i = 0; i < temp_tags.Count; i++) {

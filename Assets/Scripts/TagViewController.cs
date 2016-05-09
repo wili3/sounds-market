@@ -106,22 +106,52 @@ public class TagViewController : MonoBehaviour {
 	{
 		if (!able_to_submit)
 			return;
-		dic.Clear ();
+		if (!is_search) {
+			dic.Clear ();
 
-		dic.Add (dropdown [0].captionText.text);
-		if(dropdown [1].captionText.text!= default_option)dic.Add (dropdown [1].captionText.text);
-		if(dropdown [2].captionText.text!= default_option)dic.Add (dropdown [2].captionText.text);
+			dic.Add (dropdown [0].captionText.text);
+			if (dropdown [1].captionText.text != default_option)
+				dic.Add (dropdown [1].captionText.text);
+			if (dropdown [2].captionText.text != default_option)
+				dic.Add (dropdown [2].captionText.text);
 
-		oc_view_controller.ShowTags (dic);
+			oc_view_controller.ShowTags (dic);
 
-		Debug.Log ("Success retrieving tags");
-		Reset ();
-		tag_view.closed = true;
+			Debug.Log ("Success retrieving tags");
+			Reset ();
+			tag_view.closed = true;
+		} else {
+			List<string> search_list = new List<string>();
+			dic.Add (dropdown [0].captionText.text);
+			if (dropdown [1].captionText.text != default_option)
+				dic.Add (dropdown [1].captionText.text);
+			if (dropdown [2].captionText.text != default_option)
+				dic.Add (dropdown [2].captionText.text);
+			string url = "api/products/search?";
+
+			for(int i = 0; i < search_list.Count; i++)
+			{
+				if(i +1 < search_list.Count)
+				{
+					url = string.Concat(url,string.Concat("category_ids[]=",string.Concat(convert_inverse_dic[search_list[i]],"&")));
+             	}
+				else
+				{
+					url = string.Concat(url,string.Concat("category_ids[]=",convert_inverse_dic[search_list[i]]));
+				}
+
+				Debug.Log("url: " + url);
+			}
+			StartCoroutine(Requester.getproducts(User.current_url(),url,null));
+			Reset ();
+			tag_view.closed = true;
+		}
 		// here is where the request for offers will be made or tags returned to the offer to be submitted
 	}
 
 	public void Initialize(bool search)
 	{
+		is_search = search;
 		if (search)
 			button_search.SetActive (true);
 		else
