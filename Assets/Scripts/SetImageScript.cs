@@ -15,7 +15,7 @@ public class SetImageScript : MonoBehaviour ,IPointerClickHandler {
 		{
 			if(transform == transform.parent.GetChild(i))
 			{
-				index = i;
+				index = i-1;
 			}
 		}
 	}
