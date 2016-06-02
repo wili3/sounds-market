@@ -122,11 +122,11 @@ public class TagViewController : MonoBehaviour {
 			tag_view.closed = true;
 		} else {
 			List<string> search_list = new List<string>();
-			dic.Add (dropdown [0].captionText.text);
+			search_list.Add (dropdown [0].captionText.text);
 			if (dropdown [1].captionText.text != default_option)
-				dic.Add (dropdown [1].captionText.text);
+				search_list.Add (dropdown [1].captionText.text);
 			if (dropdown [2].captionText.text != default_option)
-				dic.Add (dropdown [2].captionText.text);
+				search_list.Add (dropdown [2].captionText.text);
 			string url = "api/products/search?";
 
 			for(int i = 0; i < search_list.Count; i++)
@@ -228,8 +228,9 @@ public class TagViewController : MonoBehaviour {
 		if (parent_keys [convert_inverse_dic [parent_option]].Count > 0) {
 			for (int i = 0; i < parent_keys [convert_inverse_dic [parent_option]].Count; i++) {
 				Dropdown.OptionData new_option = new Dropdown.OptionData ();
+				Debug.Log("Adding : " +  convert_dic[parent_keys [convert_inverse_dic [parent_option]] [i]] + "    " + parent_option);
 				new_option.text = convert_dic[parent_keys [convert_inverse_dic [parent_option]] [i]];
-				dropdown [index].options.Add (new_option);
+				if(new_option.text != parent_option)dropdown [index].options.Add (new_option);
 			}
 		} else {
 			dropdown[index].interactable = false;

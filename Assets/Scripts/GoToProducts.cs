@@ -11,7 +11,7 @@ public class GoToProducts : MonoBehaviour, IPointerClickHandler {
 	// Update is called once per frame
 	public void OnPointerClick (PointerEventData eventData) 
 	{
-		products_manager.ChangeContextToMain ();
+		StartCoroutine(Requester.getproducts (User.current_url (), "api/products", null));
 		input_handler.ref_sidemenu.closed = true;
 	}
 }

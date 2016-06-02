@@ -53,7 +53,7 @@ public class ImageManager : MonoBehaviour {
 		initialize_fake_data ();
 		set_fake_data ();
 		set_user_fake_data ();
-		client = new AmazonS3Client ("AKIAJOWBHJ5UX6M3DPAQ", "xsJZP9UIEMk/VaEF2OXiqoKnYagHAAgMekbBblIl", RegionEndpoint.EUWest1);
+		client = new AmazonS3Client ("AKIAIEXLBENWSMQ3WIQA", "0ukFG7rZ98Dul4UPXWTwT/5TxO/cBKmYkKUCXfLR", RegionEndpoint.EUWest1);
 	}
 
 	void Update()
@@ -471,10 +471,10 @@ public class ImageManager : MonoBehaviour {
 
 	public void ParseHashToDic()
 	{
-		products_manager.ChangeContextToMain ();
 		products_manager.main_offers.Clear ();
 		products_manager.main_sprites.Clear ();
 		products_manager.main_textures.Clear ();
+		products_manager.ChangeContextToMain ();
 		Dictionary<string,List<string>> dic_inside = new Dictionary<string, List<string>>();
 		/*
 		dic_inside.Add ("num_of_pics", num_of_pics_list);
@@ -565,6 +565,23 @@ public class ImageManager : MonoBehaviour {
 			dic_inside.Add("key",key_list);
 			dic_inside.Add("num_of_pics",num_of_pics);
 
+			try{
+				if(table.ContainsKey("lat"))
+				{
+					List<string> lat_list = new List<string>();
+					lat_list.Add(table["lat"].ToString());
+
+					List<string> lng_list = new List<string>();
+					lng_list.Add(table["lng"].ToString());
+					Debug.Log("adding LAT");
+
+					dic_inside.Add("lat",lat_list);
+					dic_inside.Add("lng",lng_list);
+				}
+			}
+			catch{
+
+			}
 			/*for(int j = 0; j < key_list.Count; j++)
 			{
 
@@ -572,11 +589,13 @@ public class ImageManager : MonoBehaviour {
 
 			products_manager.current_offers_view.Add(products_manager.current_offers_view.Count.ToString(),dic_inside);
 		}
+		products_manager.ChangeContextToMain ();
+		products_manager.ChangeContextToCurrent ();
 		RequestMyProducts ();
 	}
 	public void RequestMyProducts()
 	{
-		StartCoroutine(Requester.getmyproducts(User.current_url(),"api/products/search?user_id=" + PlayerPrefs.GetString("user_id"),null));
+		if(products_manager.my_offers.Count == 0)StartCoroutine(Requester.getmyproducts(User.current_url(),"api/products/search?user_id=" + PlayerPrefs.GetString("user_id"),null));
 	}
 	public void ParseHashToDicMyProducts()
 	{

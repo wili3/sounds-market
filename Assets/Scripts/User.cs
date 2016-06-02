@@ -12,7 +12,6 @@ public class User : MonoBehaviour {
 	public bool is_local;
 	// Use this for initialization
 	void Start () {
-		PlayerPrefs.DeleteAll ();
 		StartCoroutine (GetLocation ());
 		local = is_local;
 		DontDestroyOnLoad (this.gameObject);

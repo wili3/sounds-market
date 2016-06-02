@@ -42,5 +42,7 @@ public class ProductEditor : MonoBehaviour {
 			}
 		}
 		oc_viewcontroller.edit_mode = true;
+		oc_viewcontroller.submit_button.gameObject.SetActive (false);
+		oc_viewcontroller.sold_button.gameObject.SetActive (true);
 	}
 }

@@ -69,7 +69,7 @@ public class contentmanager : MonoBehaviour {
 				float temp_delta_size_y = content [index_objects [0]].sizeDelta.y;
 				products[index_objects[0]].image.texture = products_manager.sprites[object_ids[object_ids.Length - 1] + 1]; 
 				products[index_objects[0]].tittle.text = products_manager.current_offers_view[(object_ids[object_ids.Length - 1] + 1).ToString()]["tittle"][0]; 
-				products[index_objects[0]].price.text = products_manager.current_offers_view[(object_ids[object_ids.Length - 1] + 1).ToString()]["price"][0]; 
+				products[index_objects[0]].price.text = products_manager.current_offers_view[(object_ids[object_ids.Length - 1] + 1).ToString()]["price"][0] + "€"; 
 				products[index_objects[0]].index = object_ids[object_ids.Length - 1] + 1;
 				content [index_objects [0]].sizeDelta = new Vector2(content [index_objects [0]].sizeDelta.x,calculateProportion(float.Parse(products_manager.current_offers_view[(object_ids[object_ids.Length - 1] + 1).ToString()]["height"][0]),content[0].sizeDelta.x,float.Parse(products_manager.current_offers_view[(object_ids[object_ids.Length - 1] + 1).ToString()]["width"][0])) + 250);
 
@@ -116,7 +116,7 @@ public class contentmanager : MonoBehaviour {
 
 				products[index_objects[3]].image.texture = products_manager.sprites[object_ids[0]-1]; 
 				products[index_objects[3]].tittle.text = products_manager.current_offers_view[(object_ids[0]-1).ToString()]["tittle"][0]; 
-				products[index_objects[3]].price.text = products_manager.current_offers_view[(object_ids[0]-1).ToString()]["price"][0];
+				products[index_objects[3]].price.text = products_manager.current_offers_view[(object_ids[0]-1).ToString()]["price"][0] + "€";
 				products[index_objects[3]].index = object_ids[0]-1;
 
 				content [index_objects [3]].sizeDelta = new Vector2(content [index_objects [3]].sizeDelta.x,calculateProportion(float.Parse(products_manager.current_offers_view[(object_ids[0] - 1).ToString()]["height"][0]),content[0].sizeDelta.x,float.Parse(products_manager.current_offers_view[(object_ids[0] - 1).ToString()]["width"][0])) + 250);
@@ -216,7 +216,7 @@ public class contentmanager : MonoBehaviour {
 			{
 				products[i].image.texture = products_manager.sprites[i]; 
 				products[i].tittle.text = products_manager.current_offers_view[i.ToString()]["tittle"][0]; 
-				products[i].price.text = products_manager.current_offers_view[i.ToString()]["price"][0]; 
+				products[i].price.text = products_manager.current_offers_view[i.ToString()]["price"][0] +"€"; 
 			}
 			catch
 			{

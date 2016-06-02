@@ -100,7 +100,7 @@ public class inputhandler : MonoBehaviour {
 		{
 			if (ref_world_point.x > ref_sidemenu.ref_input_position.position.x && ref_world_point.y < ref_sidemenu.ref_input_position.position.y) 
 			{
-				ref_sidemenu.closed = !ref_sidemenu.closed;
+				//ref_sidemenu.closed = !ref_sidemenu.closed;
 			}
 		}
 	}
@@ -123,7 +123,7 @@ public class inputhandler : MonoBehaviour {
 		if(ref_sidemenu.handled)
 		{
 			ref_sidemenu.rec.position =  new Vector3(ref_world_point.x - difference_x , ref_sidemenu.rec.position.y, ref_sidemenu.rec.position.z);
-			if(ref_sidemenu.rec.position.x > 30f) ref_sidemenu.rec.position = new Vector3(30f,ref_sidemenu.rec.position.y,ref_sidemenu.rec.position.z);
+			//if(ref_sidemenu.rec.position.x > 30f) ref_sidemenu.rec.position = new Vector3(30f,ref_sidemenu.rec.position.y,ref_sidemenu.rec.position.z);
 			fillPositions();
 			ref_sidemenu.calculatePerc();
 		}

@@ -10,8 +10,8 @@ public class InfoView : MonoBehaviour {
 	public bool closed = true;
 	public int current_index_offer = -1, current_image_shown, current_user_id;
 	public RawImage current_image;
-	public Text price_text, user_text, rates_text, tittle_text, description_text;
-	public GameObject edit_button;
+	public Text price_text, user_text, rates_text, tittle_text, description_text, distance_text;
+	public GameObject edit_button, mail_button;
 	public List<Texture2D>  current_tex_list;
 	public GameObject right_arrow,left_arrow;
 	public string current_email;

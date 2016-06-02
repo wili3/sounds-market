@@ -5,21 +5,23 @@ using UnityEngine.UI;
 using UnityEngine.EventSystems;
 using UnityEngine.Events;
 
-public class MailToSupport : MonoBehaviour ,IPointerClickHandler {
+public class MailToSupport : MonoBehaviour, IPointerClickHandler {
 
 	public string support_mail = "pau.agusti@gmail.com";
+	public string subject = "Sounds Market";
 
 	public void OnPointerClick (PointerEventData eventData) 
 	{
-		SendEmail (support_mail);
+		SendEmail ();
 	}
-	
-	void SendEmail (string _email)
+
+
+	void SendEmail ()
 	{
-		string email = _email;
-		string subject = MyEscapeURL("");
+		string email = support_mail;
+		string _subject = MyEscapeURL(subject);
 		string body = MyEscapeURL("");
-		Application.OpenURL("mailto:" + email + "?subject=" + subject + "&body=" + body);
+		Application.OpenURL("mailto:" + email + "?subject=" + _subject + "&body=" + body);
 	}
 	string MyEscapeURL (string url)
 	{

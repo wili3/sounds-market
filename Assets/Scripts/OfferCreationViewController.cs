@@ -112,7 +112,7 @@ public class OfferCreationViewController : MonoBehaviour {
 
 	public void checkSubmitabble()
 	{
-		if (input_fields [0].text != "Título..." && input_fields[1].text != "Descripción..." && input_fields[2].text != "Precio..." && input_fields[3].text != "Email...")
+		if (input_fields [0].text != "" && input_fields[1].text != "" && input_fields[2].text != "" && input_fields[3].text != "")
 		{
 			fields_ready = true;
 		}
@@ -139,7 +139,7 @@ public class OfferCreationViewController : MonoBehaviour {
 	private void Submit ()
 	{
 		Debug.Log ("CREATING A FUCKING OFFER WHEN SHOULDN'T single");
-		ref_products_manager.my_products_sprites.Add (textures [0]);
+	//	ref_products_manager.my_products_sprites.Add (textures [0]);
 		Dictionary<string,List<string>> dic_inside = new Dictionary<string, List<string>>();
 
 		string email = input_fields [3].text;
@@ -309,10 +309,10 @@ public class OfferCreationViewController : MonoBehaviour {
 		}
 		total_pics_to_upload = 0;
 		
-		input_fields[0].text =  "Título...";
-		input_fields[1].text = "Descripción...";
-		input_fields[2].text = "Precio...";
-		input_fields[3].text = "Email...";
+		input_fields[0].text =  "";
+		input_fields[1].text = "";
+		input_fields[2].text = "";
+		input_fields[3].text = "";
 
 		//if(tags_ready)tags_ready = false;
 		if(images_ready)images_ready = false;

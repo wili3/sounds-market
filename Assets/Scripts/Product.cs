@@ -42,6 +42,13 @@ public class Product : MonoBehaviour, IPointerClickHandler {
 
 	public void OnPointerClick (PointerEventData eventData) 
 	{
+		if (input_handler.ref_sidemenu.closed == false) {
+			input_handler.ref_sidemenu.closed = true;
+			input_handler.ref_topbar.get_down = true;
+			input_handler.ref_topbar.ref_ui.moving_vertical_direction = "Up";
+			Debug.Log("closing sidemenu");
+			return;
+		}
 		input_handler.ref_info.closed = false;
 		input_handler.ref_info.gameObject.SetActive(true);
 		input_handler.ref_sidemenu.closed = true;
@@ -54,7 +61,7 @@ public class Product : MonoBehaviour, IPointerClickHandler {
 	{
 		input_handler.ref_info.current_index_offer = index;
 
-		input_handler.ref_info.price_text.text = products_manager.current_offers_view [index.ToString ()] ["price"] [0];
+		input_handler.ref_info.price_text.text = products_manager.current_offers_view [index.ToString ()] ["price"] [0] + "€";
 		input_handler.ref_info.description_text.text = products_manager.current_offers_view [index.ToString ()] ["desc"] [0];
 		input_handler.ref_info.tittle_text.text = products_manager.current_offers_view [index.ToString ()] ["tittle"] [0];
 		input_handler.ref_info.user_text.text = products_manager.current_offers_view [index.ToString ()] ["seller"] [0];
@@ -62,7 +69,19 @@ public class Product : MonoBehaviour, IPointerClickHandler {
 		input_handler.ref_info.user_text.text =  products_manager.current_offers_view [index.ToString ()] ["email"] [0];
 		input_handler.ref_info.current_email =   products_manager.current_offers_view [index.ToString ()] ["email"] [0];
 
-		input_handler.ref_info.rates_text.text = "112 valoraciones";
+		if (products_manager.current_offers_view [index.ToString ()].ContainsKey ("lat") && PlayerPrefs.HasKey("Latitude")) {
+			// get kms
+			float lat = float.Parse(products_manager.current_offers_view [index.ToString ()] ["lat"][0]);
+			float lng = float.Parse(products_manager.current_offers_view [index.ToString ()] ["lng"][0]);
+
+			input_handler.ref_info.distance_text.text = FindDistance(lat,lng,'K').ToString() + "kms";
+			Debug.Log("Lat : " + lat.ToString());
+			Debug.Log("X-Lat : " + PlayerPrefs.GetString("Latitude"));
+		} else {
+			input_handler.ref_info.distance_text.text = "Unknown";
+		}
+
+		//input_handler.ref_info.rates_text.text = "112 valoraciones";
 		input_handler.ref_info.current_image.texture = products_manager.sprites [index];
 
 		if (products_manager.sprites [index].width >= products_manager.sprites [index].height) {
@@ -104,10 +123,15 @@ public class Product : MonoBehaviour, IPointerClickHandler {
 		{
 			input_handler.ref_info.current_tex_list = products_manager.current_textures [index.ToString ()];
 		}
-		if (products_manager.current_offers_view == products_manager.my_offers)
-	    {
-			input_handler.ref_info.edit_button.SetActive(true);
+		if (products_manager.current_offers_view == products_manager.my_offers) {
+			input_handler.ref_info.edit_button.SetActive (true);
+			input_handler.ref_info.mail_button.SetActive (false);
+		} else {
+			input_handler.ref_info.edit_button.SetActive (false);
+			input_handler.ref_info.mail_button.SetActive (true);
 		}
+
+
 	}
 	public float CalculateProportion(float ref_1,float ref_2, float ref_3)
 	{
@@ -117,5 +141,30 @@ public class Product : MonoBehaviour, IPointerClickHandler {
 		desired_prop = desired_prop / ref_2;
 
 		return desired_prop;
+	}
+
+	private float FindDistance(float lat1, float lon1, char unit) {
+		float lat2 = float.Parse (PlayerPrefs.GetString ("Latitude"));
+		float lon2 = float.Parse (PlayerPrefs.GetString ("Longitude"));
+
+		float theta = lon1 - lon2;
+		float dist = Mathf.Sin(deg2rad(lat1)) * Mathf.Sin(deg2rad(lat2)) + Mathf.Cos(deg2rad(lat1)) * Mathf.Cos(deg2rad(lat2)) * Mathf.Cos(deg2rad(theta));
+		dist = Mathf.Acos(dist);
+		dist = rad2deg(dist);
+		dist = dist * 60 * 1.1515f;
+		if (unit == 'K') {
+			dist = dist * 1.609344f;
+		} else if (unit == 'N') {
+			dist = dist * 0.8684f;
+		}
+		return (dist);
+	}
+
+	private float deg2rad(float deg) {
+		return (deg * Mathf.PI / 180.0f);
+	}
+
+	private float rad2deg(float rad) {
+		return (rad / Mathf.PI * 180.0f);
 	}
 }
