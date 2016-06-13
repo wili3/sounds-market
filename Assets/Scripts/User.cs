@@ -12,6 +12,7 @@ public class User : MonoBehaviour {
 	public bool is_local;
 	// Use this for initialization
 	void Start () {
+		//PlayerPrefs.DeleteAll ();
 		StartCoroutine (GetLocation ());
 		local = is_local;
 		DontDestroyOnLoad (this.gameObject);
@@ -45,6 +46,12 @@ public class User : MonoBehaviour {
 	{
 		PlayerPrefs.SetString ("user_id", user_id);
 		Debug.Log ("SAVED " + user_id);
+	}
+
+	public void SaveUserPicUrl(string url)
+	{
+		LoadUserPic load_user_pic = GameObject.FindGameObjectWithTag ("LoadUserPic").GetComponent<LoadUserPic> ();
+		StartCoroutine (load_user_pic.GetPic (url));
 	}
 
 	bool CheckToken()

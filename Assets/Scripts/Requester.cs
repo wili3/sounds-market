@@ -236,7 +236,7 @@ public class Requester : MonoBehaviour {
 			bool result = false;
 			
 			Hashtable table = (Hashtable)JSON.JsonDecode(request.response.Text, ref result );
-			
+			Hashtable table_child = (Hashtable)table["user"];
 			if(!result)
 			{
 				//here will go a retry
@@ -247,6 +247,12 @@ public class Requester : MonoBehaviour {
 			{
 				UsersManager users_manager = GameObject.FindGameObjectWithTag("ProductsManager").GetComponent<UsersManager>();
 				users_manager.ParseHashToDicMyUser(table);
+				User user = GameObject.FindGameObjectWithTag("Player").GetComponent<User>();
+				user.SaveUserPicUrl(table_child["facebook_image_url"] as String);
+				if(table.ContainsKey("facebook_image_url"))
+				{
+					Debug.Log ( "PIC URL : " + (string)table_child["facebook_image_url"]);
+				}
 			}
 		});
 		yield return request;

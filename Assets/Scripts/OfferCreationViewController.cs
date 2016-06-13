@@ -104,6 +104,27 @@ public class OfferCreationViewController : MonoBehaviour {
 
 	}
 
+	public void SetImageAndroid(int index)
+	{
+		index_to_set = index;
+		AndroidCamera.instance.OnImagePicked += OnImagePicked;
+		AndroidCamera.instance.GetImageFromGallery();
+	}
+
+	private void OnImagePicked(AndroidImagePickResult result) {
+		Debug.Log("OnImagePicked");
+		if (result.IsSucceeded) {
+			AN_PoupsProxy.showMessage ("Image Pick Rsult", "Succeeded, path: " + result.ImagePath);
+			draw_texture = result.Image;
+			textures [index_to_set] = result.Image;
+			images_to_upload[index_to_set].texture = result.Image;
+		} else {
+			AN_PoupsProxy.showMessage ("Image Pick Rsult", "Failed");
+		}
+		
+		AndroidCamera.instance.OnImagePicked -= OnImagePicked;
+	}
+
 	public void checkSubmitabbleWithIndex(bool sold)
 	{
 		Submit_with_index(info_view.current_index_offer, sold);

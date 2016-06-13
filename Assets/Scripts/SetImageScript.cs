@@ -23,7 +23,11 @@ public class SetImageScript : MonoBehaviour ,IPointerClickHandler {
 	// Update is called once per frame
 	public void OnPointerClick (PointerEventData eventData) 
 	{
-		oc_view_controller.SetImage (index);
-		Debug.Log ("hola");
+		if (Application.platform == RuntimePlatform.IPhonePlayer) {
+			oc_view_controller.SetImage (index);
+		} else if (Application.platform == RuntimePlatform.Android) {
+			Debug.Log ("hola ANDROID");
+			oc_view_controller.SetImageAndroid (index);
+		}
 	}
 }

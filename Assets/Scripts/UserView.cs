@@ -19,6 +19,7 @@ public class UserView : MonoBehaviour {
 	public InfoView info_view;
 	public Hashtable user_ratings_table, my_user_ratings_table;
 	public Button edit_button;
+	public LoadUserPic load_user_pic;
 
 	public int num_of_total_ratings, num_of_5, num_of_4, num_of_3, num_of_2, num_of_1, average;
 
@@ -78,12 +79,20 @@ public class UserView : MonoBehaviour {
 		Debug.Log (users_manager.other_users_info [info_view.current_user_id].Count);
 		Debug.Log (users_manager.other_users_info [info_view.current_user_id]["name"].Count);
 		user_name.text = users_manager.other_users_info [info_view.current_user_id] ["name"] [0];
-		user_mail.text = users_manager.other_users_info [info_view.current_user_id] ["email"] [0];
+		Debug.Log(" email : " + users_manager.other_users_info [info_view.current_user_id] ["email"] [0]);
+		Debug.Log(" fb profile pic : " + users_manager.other_users_info [info_view.current_user_id] ["facebook_profile_pic"] [0]);
+		if (users_manager.other_users_info [info_view.current_user_id] ["email"] [0] != null) {
+			user_mail.text = users_manager.other_users_info [info_view.current_user_id] ["email"] [0];
+		} else {
+			user_mail.text = "no email";
+		}
 		EnableStars ();
 		LoadRatings ();
 		edit_button.gameObject.SetActive (false);
 		user_name.interactable = false;
 		user_mail.interactable = false;
+
+		StartCoroutine (load_user_pic.GetOtherUserPic (users_manager.other_users_info [info_view.current_user_id] ["facebook_profile_pic"][0]));
 		// HERE I SHOULD LOAD THE RATES TO THE STARS
 	}
 
@@ -124,8 +133,8 @@ public class UserView : MonoBehaviour {
 		num_of_total_ratings = num_of_1 + num_of_2 + num_of_3 + num_of_4 + num_of_5;
 
 		user_rates.text = num_of_total_ratings.ToString() + " Valoraciones";
-
-		float average_not_ceiled = ( (num_of_1) + (num_of_2*2) + (num_of_3*3) + (num_of_4*4) + (num_of_5*5))/num_of_total_ratings;
+		float average_not_ceiled = 0;
+		if ( num_of_total_ratings > 0)average_not_ceiled = ( (num_of_1) + (num_of_2*2) + (num_of_3*3) + (num_of_4*4) + (num_of_5*5))/num_of_total_ratings;
 		average = Mathf.FloorToInt (average_not_ceiled);
 		SetStars ();
 	}

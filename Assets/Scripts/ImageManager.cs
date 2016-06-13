@@ -511,7 +511,11 @@ public class ImageManager : MonoBehaviour {
 			dic_inside.Add("user_id",user_id_list);
 
 			List<string> desc_list = new List<string>();
-			desc_list.Add(table["description"].ToString());
+			if(table["description"]!= null){
+				desc_list.Add(table["description"].ToString());
+			} else {
+				desc_list.Add("No descripción.");
+			}
 			dic_inside.Add("desc", desc_list);
 
 			List<string> id_list = new List<string>();

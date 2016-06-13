@@ -95,8 +95,31 @@ public class IOSNativeFeaturesPreview : BaseIOSFeaturePreview {
 		StartX = XStartPos;
 		StartY += YLableStep;
 		StartY += YLableStep;
+		GUI.Label(new Rect(StartX, StartY, Screen.width, 40), "Networking", style);
+		
+		
+		StartX = XStartPos;
+		StartY += YLableStep;
+		if(GUI.Button(new Rect(StartX, StartY, buttonWidth, buttonHeight), "TBM Multiplayer Example")) {
+			LoadLevel("TMB_Multiplayer_Example");
+		}
 
 
+		StartX += XButtonStep;
+		if(GUI.Button(new Rect(StartX, StartY, buttonWidth, buttonHeight), "RTM Multiplayer Example")) {
+			LoadLevel("RTM_Multiplayer_Example");
+		}
+
+		
+		StartX += XButtonStep;
+		if(GUI.Button(new Rect(StartX, StartY, buttonWidth, buttonHeight), "P2P Game Example")) {
+			LoadLevel("Peer-To-PeerGameExample");
+		}
+
+
+		StartX = XStartPos;
+		StartY += YLableStep;
+		StartY += YLableStep;
 		GUI.Label(new Rect(StartX, StartY, Screen.width, 40), "Additional Features Features", style);
 
 		StartX = XStartPos;

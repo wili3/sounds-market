@@ -86,6 +86,17 @@ public class UsersManager : MonoBehaviour {
 		string user_mail = (string)table ["email"];
 		List<string> user_mail_list = new List<string> ();
 		user_mail_list.Add (user_mail);
+		List<string> user_profile_pic_list = new List<string>();
+
+		try{
+			string user_profile_pic =  (string)table["facebook_image_url"];
+			if(user_profile_pic != string.Empty){
+				user_profile_pic_list.Add(user_profile_pic);
+				dic_inside.Add ("facebook_profile_pic", user_profile_pic_list);
+			}
+		} catch{
+
+		}
 
 		dic_inside.Add ("email", user_mail_list);
 		dic_inside.Add ("name", user_name_list);

@@ -61,7 +61,7 @@ public class inputhandler : MonoBehaviour {
 					char last_char = hit.collider.name[hit.collider.name.Length -1];
 					int index = 0;
 					int.TryParse(last_char.ToString(),out index);
-					ref_creation.SetImage(index-1);
+					//ref_creation.SetImage(index-1);
 				}
 			}
 		}
