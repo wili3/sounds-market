@@ -15,6 +15,8 @@ public class InfoView : MonoBehaviour {
 	public List<Texture2D>  current_tex_list;
 	public GameObject right_arrow,left_arrow;
 	public string current_email;
+
+	public RectTransform rec_ref_target;
 	// Use this for initialization
 	void Start () 
 	{
@@ -38,7 +40,7 @@ public class InfoView : MonoBehaviour {
 		if(!closed)
 		{
 			rec.anchoredPosition = new Vector2(rec.anchoredPosition.x,rec.anchoredPosition.y + acceleration);
-			if(rec.anchoredPosition.y > target_position)
+			if(rec.anchoredPosition.y > rec_ref_target.anchoredPosition.y)
 			{
 				rec.anchoredPosition = new Vector2(rec.anchoredPosition.x,target_position);
 			}
