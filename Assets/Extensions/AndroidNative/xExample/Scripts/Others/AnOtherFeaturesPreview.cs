@@ -7,7 +7,7 @@ public class AnOtherFeaturesPreview : MonoBehaviour {
 	public Texture2D helloWorldTexture;
 
 	void Start() {
-		LoadNetworkInfo();
+		//LoadNetworkInfo();
 	}
 
 	public void SaveToGalalry() {
@@ -151,7 +151,7 @@ public class AnOtherFeaturesPreview : MonoBehaviour {
 		Debug.Log("OnImagePicked");
 		if (result.IsSucceeded) {
 			AN_PoupsProxy.showMessage ("Image Pick Rsult", "Succeeded, path: " + result.ImagePath);
-			image.GetComponent<Renderer> ().material.mainTexture = result.Image;
+			//image.GetComponent<Renderer> ().material.mainTexture = result.Image;
 		} else {
 			AN_PoupsProxy.showMessage ("Image Pick Rsult", "Failed");
 		}

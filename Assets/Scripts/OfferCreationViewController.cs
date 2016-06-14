@@ -88,7 +88,7 @@ public class OfferCreationViewController : MonoBehaviour {
 			//destroying old texture
 			
 			//applying new texture
-			draw_texture = result.Image;
+			//draw_texture = result.Image;
 			//IOSMessage.Create("Success", "Image Successfully Loaded, Image size: " + result.Image.width + "x" + result.Image.height);
 			textures [index_to_set] = draw_texture;
 			images_to_upload[index_to_set].texture = textures [index_to_set];
@@ -115,7 +115,7 @@ public class OfferCreationViewController : MonoBehaviour {
 		Debug.Log("OnImagePicked");
 		if (result.IsSucceeded) {
 			AN_PoupsProxy.showMessage ("Image Pick Rsult", "Succeeded, path: " + result.ImagePath);
-			draw_texture = result.Image;
+			//draw_texture = result.Image;
 			textures [index_to_set] = result.Image;
 			images_to_upload[index_to_set].texture = result.Image;
 		} else {
