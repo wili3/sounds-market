@@ -44,10 +44,11 @@ public class sidemenu : MonoBehaviour {
 				{
 					ref_scroll.velocity = Vector2.zero;
 				}
-			}
-			if(sidemenu_object.activeInHierarchy)
-			{
-				sidemenu_object.SetActive(false);
+			} else {
+				if(sidemenu_object.activeInHierarchy)
+				{
+					sidemenu_object.SetActive(false);
+				}
 			}
 		}
 		if(!closed && !handled)
