@@ -20,6 +20,7 @@ public class sidemenu : MonoBehaviour {
 
 	public Image shadow;
 	public float shadow_level = 0.60f;
+	public GameObject sidemenu_object;
 	// Use this for initialization
 	void Start () 
 	{
@@ -44,6 +45,10 @@ public class sidemenu : MonoBehaviour {
 					ref_scroll.velocity = Vector2.zero;
 				}
 			}
+			if(sidemenu_object.activeInHierarchy)
+			{
+				sidemenu_object.SetActive(false);
+			}
 		}
 		if(!closed && !handled)
 		{
@@ -55,6 +60,11 @@ public class sidemenu : MonoBehaviour {
 				{
 					ref_scroll.velocity = Vector2.zero;
 				}
+			}
+			
+			if(!sidemenu_object.activeInHierarchy)
+			{
+				sidemenu_object.SetActive(true);
 			}
 		}
 
