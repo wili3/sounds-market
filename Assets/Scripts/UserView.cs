@@ -50,7 +50,7 @@ public class UserView : MonoBehaviour {
 			rec.anchoredPosition = new Vector2(rec.anchoredPosition.x,rec.anchoredPosition.y + acceleration);
 			if(rec.anchoredPosition.y > rec_ref_target.anchoredPosition.y)
 			{
-				rec.anchoredPosition = new Vector2(rec.anchoredPosition.x,target_position);
+				rec.anchoredPosition = new Vector2(rec.anchoredPosition.x,rec_ref_target.anchoredPosition.y);
 			}
 		}
 	}
@@ -110,6 +110,7 @@ public class UserView : MonoBehaviour {
 
 		DisableStars ();
 
+		load_user_pic.user_image.texture = load_user_pic.sidemenu_image.texture;
 		// HERE I SHOULD LOAD THE RATES TO THE STARS
 	}
 

@@ -68,7 +68,7 @@ public class OfferCreationViewController : MonoBehaviour {
 			rec.anchoredPosition = new Vector2(rec.anchoredPosition.x,rec.anchoredPosition.y + acceleration);
 			if(rec.anchoredPosition.y > rec_ref_target.anchoredPosition.y)
 			{
-				rec.anchoredPosition = new Vector2(rec.anchoredPosition.x,target_position);
+				rec.anchoredPosition = new Vector2(rec.anchoredPosition.x,rec_ref_target.anchoredPosition.y);
 			}
 		}
 		
@@ -89,7 +89,7 @@ public class OfferCreationViewController : MonoBehaviour {
 			//destroying old texture
 			
 			//applying new texture
-			//draw_texture = result.Image;
+			draw_texture = result.Image;
 			//IOSMessage.Create("Success", "Image Successfully Loaded, Image size: " + result.Image.width + "x" + result.Image.height);
 			textures [index_to_set] = draw_texture;
 			images_to_upload[index_to_set].texture = textures [index_to_set];

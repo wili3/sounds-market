@@ -9,6 +9,10 @@ public class EditUserScript : MonoBehaviour {
 	// Update is called once per frame
 	public void EditUser()
 	{
+		if (!user_view.my_user) {
+			Debug.Log("triggering EDIT USER when souldn't");
+			return;
+		}
 		string name = user_view.user_name.text;
 
 		string first_name = name;

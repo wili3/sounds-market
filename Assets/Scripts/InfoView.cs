@@ -42,7 +42,7 @@ public class InfoView : MonoBehaviour {
 			rec.anchoredPosition = new Vector2(rec.anchoredPosition.x,rec.anchoredPosition.y + acceleration);
 			if(rec.anchoredPosition.y > rec_ref_target.anchoredPosition.y)
 			{
-				rec.anchoredPosition = new Vector2(rec.anchoredPosition.x,target_position);
+				rec.anchoredPosition = new Vector2(rec.anchoredPosition.x,rec_ref_target.anchoredPosition.y);
 			}
 		}
 

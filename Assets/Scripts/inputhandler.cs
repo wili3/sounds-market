@@ -39,8 +39,8 @@ public class inputhandler : MonoBehaviour {
 				}
 				else if(hit.collider.name == "Close")
 				{
-					ref_creation.closed = true;
-					ref_info.edit_button.SetActive(false);
+					//ref_creation.closed = true;
+					//ref_info.edit_button.SetActive(false);
 					// all this will have to be moved to each class DO THIS
 				}
 				else if(hit.collider.name == "OfferCreation")
@@ -123,7 +123,7 @@ public class inputhandler : MonoBehaviour {
 		if(ref_sidemenu.handled)
 		{
 			ref_sidemenu.rec.position =  new Vector3(ref_world_point.x - difference_x , ref_sidemenu.rec.position.y, ref_sidemenu.rec.position.z);
-			//if(ref_sidemenu.rec.position.x > 30f) ref_sidemenu.rec.position = new Vector3(30f,ref_sidemenu.rec.position.y,ref_sidemenu.rec.position.z);
+			if(ref_sidemenu.rec.position.x > 30f) ref_sidemenu.rec.position = new Vector3(30f,ref_sidemenu.rec.position.y,ref_sidemenu.rec.position.z);
 			fillPositions();
 			ref_sidemenu.calculatePerc();
 		}
