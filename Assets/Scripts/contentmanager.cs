@@ -64,16 +64,22 @@ public class contentmanager : MonoBehaviour {
 	{
 		if (ref_scroll.moving_vertical_direction == "Down" && object_ids[3] < products_manager.total_products_current_view)
 		{
-			try
-			{
+			//try
+			//{
+			if(object_ids[object_ids.Length - 1] + 1 == products_manager.sprites.Count)
+				return;
 				float temp_delta_size_y = content [index_objects [0]].sizeDelta.y;
+			Debug.Log(index_objects[0]);
+			Debug.Log(object_ids[object_ids.Length - 1] + 1);
 				products[index_objects[0]].image.texture = products_manager.sprites[object_ids[object_ids.Length - 1] + 1]; 
 				products[index_objects[0]].tittle.text = products_manager.current_offers_view[(object_ids[object_ids.Length - 1] + 1).ToString()]["tittle"][0]; 
 				products[index_objects[0]].price.text = products_manager.current_offers_view[(object_ids[object_ids.Length - 1] + 1).ToString()]["price"][0] + "€"; 
 				products[index_objects[0]].index = object_ids[object_ids.Length - 1] + 1;
-				content [index_objects [0]].sizeDelta = new Vector2(content [index_objects [0]].sizeDelta.x,calculateProportion(float.Parse(products_manager.current_offers_view[(object_ids[object_ids.Length - 1] + 1).ToString()]["height"][0]),content[0].sizeDelta.x,float.Parse(products_manager.current_offers_view[(object_ids[object_ids.Length - 1] + 1).ToString()]["width"][0])) + 250);
 
-				float temp_offset = calculateProportion(float.Parse(products_manager.current_offers_view[(object_ids[object_ids.Length - 1] + 1).ToString()]["height"][0]),content[0].sizeDelta.x,float.Parse(products_manager.current_offers_view[(object_ids[object_ids.Length - 1] + 1).ToString()]["width"][0])) + 250;
+
+			content [index_objects [0]].sizeDelta = new Vector2(971,calculateProportion(float.Parse(products_manager.current_offers_view[(object_ids[object_ids.Length - 1] + 1).ToString()]["height"][0]),float.Parse(products_manager.current_offers_view[(object_ids[object_ids.Length - 1] + 1).ToString()]["height"][0]),971));
+			products[index_objects[0]].image.rectTransform.sizeDelta = content [index_objects [0]].sizeDelta;
+			float temp_offset = calculateProportion(float.Parse(products_manager.current_offers_view[(object_ids[object_ids.Length - 1] + 1).ToString()]["height"][0]),content[0].sizeDelta.x,float.Parse(products_manager.current_offers_view[(object_ids[object_ids.Length - 1] + 1).ToString()]["width"][0])+ 250) ;
 		
 				float dist;
 				dist = Vector3.Distance (content [index_objects[0]].transform.position, content [index_objects[3]].transform.position) + products[index_objects[3]].dist + 22.5f;
@@ -95,11 +101,11 @@ public class contentmanager : MonoBehaviour {
 					object_ids [i] += 1;
 				}
 
-			}
-			catch
-			{
-
-			}
+			//}
+			//catch
+			//{
+			//	Debug.Log("Something is going wrong");
+			//}
 		}
 
 	}
@@ -110,8 +116,8 @@ public class contentmanager : MonoBehaviour {
 		if (ref_scroll.moving_vertical_direction == "Up" && object_ids[0] > 0) 
 		{
 
-			try
-			{
+			//try
+			//{
 				float temp_delta_size_y = content [index_objects [3]].sizeDelta.y;
 
 				products[index_objects[3]].image.texture = products_manager.sprites[object_ids[0]-1]; 
@@ -119,8 +125,8 @@ public class contentmanager : MonoBehaviour {
 				products[index_objects[3]].price.text = products_manager.current_offers_view[(object_ids[0]-1).ToString()]["price"][0] + "€";
 				products[index_objects[3]].index = object_ids[0]-1;
 
-				content [index_objects [3]].sizeDelta = new Vector2(content [index_objects [3]].sizeDelta.x,calculateProportion(float.Parse(products_manager.current_offers_view[(object_ids[0] - 1).ToString()]["height"][0]),content[0].sizeDelta.x,float.Parse(products_manager.current_offers_view[(object_ids[0] - 1).ToString()]["width"][0])) + 250);
-
+			content [index_objects [3]].sizeDelta = new Vector2(971, calculateProportion(float.Parse(products_manager.current_offers_view[(object_ids[0] - 1).ToString()]["width"][0]),float.Parse(products_manager.current_offers_view[(object_ids[0] - 1).ToString()]["height"][0]),971));
+			products[index_objects[3]].image.rectTransform.sizeDelta = content [index_objects [3]].sizeDelta;
 				float temp_offset = calculateProportion(float.Parse(products_manager.current_offers_view[(object_ids[0] - 1).ToString()]["height"][0]),content[0].sizeDelta.x,float.Parse(products_manager.current_offers_view[(object_ids[0] - 1).ToString()]["width"][0])) + 250; 
 
 				float dist;
@@ -142,11 +148,11 @@ public class contentmanager : MonoBehaviour {
 				{
 					object_ids [i] -= 1;
 				}
-			}
-			catch
-			{
-				
-			}
+			//}
+			//catch
+			//{
+			//	Debug.Log("Something is going wrong");	
+			//}
 		}
 		
 	}
@@ -194,20 +200,23 @@ public class contentmanager : MonoBehaviour {
 
 	public float calculateProportion(float ref1, float ref2, float ref3)
 	{
-		float result = ref1 * ref2;
-		result = result / ref3;
-		return result;
+		return (ref2 * ref3) / ref1;
+	}
+
+	public void HardReset()
+	{
+		ref_scroll.scroll.normalizedPosition = new Vector2 (0.5f, 1);
+		Reset ();
 	}
 
 	public void Reset()
 	{
-		ref_scroll.scroll.normalizedPosition = new Vector2 (0.5f, 1);
+		//ref_scroll.scroll.normalizedPosition = new Vector2 (0.5f, 1);
 		for(int i = 0; i < content.Length; i++)
 		{
-			content[i].anchoredPosition = positions[i];
 			index_objects[i] = i;
 			object_ids[i] = i;
-			content[i].sizeDelta = new Vector2(971,971);
+
 
 			content[i].gameObject.SetActive(true);
 			products[i].index = i;
@@ -217,6 +226,16 @@ public class contentmanager : MonoBehaviour {
 				products[i].image.texture = products_manager.sprites[i]; 
 				products[i].tittle.text = products_manager.current_offers_view[i.ToString()]["tittle"][0]; 
 				products[i].price.text = products_manager.current_offers_view[i.ToString()]["price"][0] +"€"; 
+				content[i].sizeDelta =  new Vector2(971, calculateProportion(float.Parse(products_manager.current_offers_view[i.ToString()]["width"][0]),float.Parse(products_manager.current_offers_view[i.ToString()]["height"][0]),971));
+				products[i].image.rectTransform.sizeDelta = content[i].sizeDelta;
+				products[i].calculateDist();
+
+				if(i > 0)
+				{
+					positions[i] = new Vector2(positions[i].x, positions[i-1].y - content[i-1].sizeDelta.y - 22.5f);
+				}
+
+				content[i].anchoredPosition = positions[i];
 			}
 			catch
 			{

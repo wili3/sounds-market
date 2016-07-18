@@ -8,13 +8,18 @@ public class User : MonoBehaviour {
 
 	public static string staging_url = "http://sm-staging.victorblasco.me/";
 	public static string local_url = "http://sounds-market.dev/";
-	public static bool local = false;
-	public bool is_local;
+	public static bool local = false, guest;
+	public bool is_local, is_guest;
 	// Use this for initialization
 	void Start () {
-		PlayerPrefs.DeleteAll ();
+		Debug.Log (PlayerPrefs.GetString ("access_token"));
+		//PlayerPrefs.DeleteAll ();
 		StartCoroutine (GetLocation ());
+		if (PlayerPrefs.GetString ("access_token") == "95fe67e038bd81abba7d81c74cbb2f1b") {
+			is_guest = true;
+		}
 		local = is_local;
+		guest = is_guest;
 		DontDestroyOnLoad (this.gameObject);
 		if (CheckToken()) 
 		{
@@ -35,6 +40,21 @@ public class User : MonoBehaviour {
 		else {
 			return staging_url;
 		}
+	}
+
+	public void SetGuestTrue()
+	{
+		guest = true;
+	}
+
+	public void SetGuestFalse()
+	{
+		guest = false;
+	}
+
+	public static bool is_guest_user()
+	{
+		return guest;
 	}
 
 	public void SaveToken(string token)
@@ -63,6 +83,12 @@ public class User : MonoBehaviour {
 	{
 		// Here will make a request to check if the current token is valid
 		return true;
+	}
+
+	public void SaveGuestUserInfo()
+	{
+		PlayerPrefs.SetString ("access_token", "95fe67e038bd81abba7d81c74cbb2f1b");
+		SaveUserID ("13");
 	}
 
 	public void SaveUserName(string _user_name)

@@ -11,8 +11,8 @@ public class ClearTagView : MonoBehaviour ,IPointerClickHandler {
 	
 	public void OnPointerClick (PointerEventData eventData) 
 	{
-		tag_view.tag_view_controller.Reset ();
-		tag_view.tag_view_controller.Initialize (tag_view.tag_view_controller.last_type);
+		tag_view.gameObject.SetActive (true);
+		tag_view.tag_view_controller.ResetTags ();
 	}
 	// Use this for initialization
 	

@@ -57,10 +57,10 @@ public class TagViewController : MonoBehaviour {
 				Debug.Log("hey this is able to submit");
 				current_first_option = dropdown[0].captionText.text;
 				LoadDropdownOptions(1);
-				dropdown[1].captionText.text = default_option;
+				/*dropdown[1].captionText.text = default_option;
 				dropdown[1].value = 0;
 				dropdown[2].captionText.text = default_option;
-				dropdown[2].value = 0;
+				dropdown[2].value = 0;*/
 			}
 			if (dropdown[1].captionText.text != default_option)
 			{
@@ -74,8 +74,8 @@ public class TagViewController : MonoBehaviour {
 					Debug.Log("hey this is able to submit");
 					current_second_option = dropdown[1].captionText.text;
 					LoadDropdownOptions(2);
-					dropdown[2].captionText.text = default_option;
-					dropdown[2].value = 0;
+					//dropdown[2].captionText.text = default_option;
+					//dropdown[2].value = 0;
 				}
 			}
 		}
@@ -110,9 +110,9 @@ public class TagViewController : MonoBehaviour {
 			dic.Clear ();
 
 			dic.Add (dropdown [0].captionText.text);
-			if (dropdown [1].captionText.text != default_option)
+			if (dropdown [1].captionText.text != default_option && dropdown[1].captionText.text != "No hay subcategorías de esta categoría")
 				dic.Add (dropdown [1].captionText.text);
-			if (dropdown [2].captionText.text != default_option)
+			if (dropdown [2].captionText.text != default_option && dropdown[2].captionText.text != "No hay subcategorías de esta categoría")
 				dic.Add (dropdown [2].captionText.text);
 
 			oc_view_controller.ShowTags (dic);
@@ -123,9 +123,9 @@ public class TagViewController : MonoBehaviour {
 		} else {
 			List<string> search_list = new List<string>();
 			search_list.Add (dropdown [0].captionText.text);
-			if (dropdown [1].captionText.text != default_option)
+			if (dropdown [1].captionText.text != default_option && dropdown[1].captionText.text != "No hay subcategorías de esta categoría")
 				search_list.Add (dropdown [1].captionText.text);
-			if (dropdown [2].captionText.text != default_option)
+			if (dropdown [2].captionText.text != default_option && dropdown[2].captionText.text != "No hay subcategorías de esta categoría")
 				search_list.Add (dropdown [2].captionText.text);
 			string url = "api/products/search?";
 
@@ -147,6 +147,13 @@ public class TagViewController : MonoBehaviour {
 			tag_view.closed = true;
 		}
 		// here is where the request for offers will be made or tags returned to the offer to be submitted
+	}
+
+	public void ResetTags()
+	{
+		dic.Clear ();
+		oc_view_controller.ShowTags (dic);
+		Reset ();
 	}
 
 	public void Initialize(bool search)
@@ -232,8 +239,17 @@ public class TagViewController : MonoBehaviour {
 				new_option.text = convert_dic[parent_keys [convert_inverse_dic [parent_option]] [i]];
 				if(new_option.text != parent_option)dropdown [index].options.Add (new_option);
 			}
+			dropdown[index].captionText.text = "Choose tag";
 		} else {
 			dropdown[index].interactable = false;
+			dropdown[index].captionText.text = "No hay subcategorías de esta categoría";
+			dropdown[index].value = 0;
+			if(index == 1)
+			{
+				dropdown[2].captionText.text = "No hay subcategorías de esta categoría";
+				dropdown[2].value = 0;
+				dropdown[2].interactable = false;
+			}
 		}
 	}
 }

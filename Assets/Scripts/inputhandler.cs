@@ -86,7 +86,9 @@ public class inputhandler : MonoBehaviour {
 				}
 
 				ref_sidemenu.handled = false;
-				if(ref_sidemenu.rec.position.x < 189.4881f)ref_sidemenu.closed = true;
+				Debug.Log("recT sidemenu position x : " + ref_sidemenu.rec.position.x);
+				if(ref_sidemenu.rec.position.x < 90.4881f)ref_sidemenu.closed = true;
+				Debug.Log("inertia side menu : " + inertia_sidemenu);
 				if(inertia_sidemenu > 0)ref_sidemenu.closed = false;
 				initial_swipe_position = Vector2.zero;
 				inertia_sidemenu = 0;
@@ -113,19 +115,19 @@ public class inputhandler : MonoBehaviour {
 			ref_topbar.get_down = true;
 			ref_topbar.ref_ui.moving_vertical_direction = "Up";
 			ref_sidemenu.handled = true;
-				initial_swipe_position = Camera.main.ScreenToWorldPoint( Input.mousePosition );
-				difference_x = initial_swipe_position.x - ref_sidemenu.rec.position.x;
+			initial_swipe_position = Camera.main.ScreenToWorldPoint( Input.mousePosition );
+			difference_x = initial_swipe_position.x - ref_sidemenu.rec.position.x;
 			
 			ref_sidemenu.rec.position =  new Vector3(ref_world_point.x - difference_x , ref_sidemenu.rec.position.y, ref_sidemenu.rec.position.z);
-			if(ref_sidemenu.rec.position.x > 30f) ref_sidemenu.rec.position = new Vector3(30f,ref_sidemenu.rec.position.y,ref_sidemenu.rec.position.z);
+			if(ref_sidemenu.rec.anchoredPosition.x > ref_sidemenu.target_x) ref_sidemenu.rec.anchoredPosition = new Vector2(ref_sidemenu.target_x,ref_sidemenu.rec.anchoredPosition.y);
 			fillPositions();
 		}
 		if(ref_sidemenu.handled)
 		{
 			ref_sidemenu.rec.position =  new Vector3(ref_world_point.x - difference_x , ref_sidemenu.rec.position.y, ref_sidemenu.rec.position.z);
-			if(ref_sidemenu.rec.position.x > 30f) ref_sidemenu.rec.position = new Vector3(30f,ref_sidemenu.rec.position.y,ref_sidemenu.rec.position.z);
-			fillPositions();
+			if(ref_sidemenu.rec.anchoredPosition.x > ref_sidemenu.target_x) ref_sidemenu.rec.anchoredPosition = new Vector2(ref_sidemenu.target_x,ref_sidemenu.rec.anchoredPosition.y);
 			ref_sidemenu.calculatePerc();
+			fillPositions();
 		}
 	}
 	void fillPositions ()

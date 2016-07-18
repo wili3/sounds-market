@@ -50,4 +50,11 @@ public class FacebookInitializer : MonoBehaviour {
 		// the token that i want to save will have to be saved in other place
 		return;
 	}
+
+	public void LoginGuestUser()
+	{
+		user.SaveGuestUserInfo ();
+		user.SetGuestTrue ();
+		Application.LoadLevel (1);
+	}
 }

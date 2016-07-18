@@ -98,7 +98,7 @@ public class OfferCreationViewController : MonoBehaviour {
 		} 
 		else 
 		{
-			IOSMessage.Create("ERROR", "Image Load Failed");
+
 		}
 		
 		IOSCamera.OnImagePicked -= OnImage;
@@ -115,26 +115,25 @@ public class OfferCreationViewController : MonoBehaviour {
 	private void OnImagePicked(AndroidImagePickResult result) {
 		Debug.Log("OnImagePicked");
 		if (result.IsSucceeded) {
-			AN_PoupsProxy.showMessage ("Image Pick Rsult", "Succeeded, path: " + result.ImagePath);
 			//draw_texture = result.Image;
 			textures [index_to_set] = result.Image;
 			images_to_upload[index_to_set].texture = result.Image;
 		} else {
-			AN_PoupsProxy.showMessage ("Image Pick Rsult", "Failed");
+
 		}
 		
 		AndroidCamera.instance.OnImagePicked -= OnImagePicked;
 	}
 
-	public void checkSubmitabbleWithIndex(bool sold)
+	public void checkSubmitabbleWithIndex(bool sold, bool deleted)
 	{
-		Submit_with_index(info_view.current_index_offer, sold);
+		Submit_with_index(info_view.current_index_offer, sold, deleted);
 		clearCreation();
 	}
 
 	public void checkSubmitabble()
 	{
-		if (input_fields [0].text != "" && input_fields[1].text != "" && input_fields[2].text != "" && input_fields[3].text != "")
+		if (input_fields [0].text != "" && input_fields[1].text != "" && input_fields[2].text != "")
 		{
 			fields_ready = true;
 		}
@@ -164,7 +163,7 @@ public class OfferCreationViewController : MonoBehaviour {
 	//	ref_products_manager.my_products_sprites.Add (textures [0]);
 		Dictionary<string,List<string>> dic_inside = new Dictionary<string, List<string>>();
 
-		string email = input_fields [3].text;
+		//string email = input_fields [3].text;
 		string tittle = input_fields [0].text;
 		string desc =  input_fields [1].text;
 		string seller = "Guillem";
@@ -175,9 +174,9 @@ public class OfferCreationViewController : MonoBehaviour {
 		string num_of_pics = total_pics_to_upload.ToString ();
 		string user_id = "21";
 		
-		List<string> email_list = new List<string>();
-		email_list.Add(email);
-		dic_inside.Add("email",email_list);
+		//List<string> email_list = new List<string>();
+		//email_list.Add(email);
+		//dic_inside.Add("email",email_list);
 		
 		List<string> tittle_list = new List<string>();
 		tittle_list.Add(tittle);
@@ -246,7 +245,7 @@ public class OfferCreationViewController : MonoBehaviour {
 		closed = true;
 	}
 
-	private void Submit_with_index (int index_to_submit, bool sold)
+	private void Submit_with_index (int index_to_submit, bool sold, bool deleted)
 	{
 		int index = index_to_submit;
 		try
@@ -255,7 +254,7 @@ public class OfferCreationViewController : MonoBehaviour {
 			ref_products_manager.current_offers_view[index.ToString()]["tittle"][0] = input_fields[0].text;
 			ref_products_manager.current_offers_view[index.ToString()]["desc"][0] = input_fields[1].text;
 			ref_products_manager.current_offers_view[index.ToString()]["price"][0] = input_fields[2].text;
-			ref_products_manager.current_offers_view[index.ToString()]["email"][0] = input_fields[3].text;
+			//ref_products_manager.current_offers_view[index.ToString()]["email"][0] = input_fields[3].text;
 
 			List<string> temp_list = new List<string>();
 
@@ -312,7 +311,7 @@ public class OfferCreationViewController : MonoBehaviour {
 			}
 			Dictionary<string,List<string>> dic_inside = new Dictionary<string, List<string>>();
 			dic_inside = ref_products_manager.current_offers_view[index.ToString()];
-			image_manager.ParseDicToHashEdit(dic_inside, sold);
+			image_manager.ParseDicToHashEdit(dic_inside, sold, deleted);
 		}
 		catch
 		{

@@ -12,10 +12,11 @@ public class OpenSelfUserView : MonoBehaviour ,IPointerClickHandler {
 	
 	public void OnPointerClick (PointerEventData eventData) 
 	{
+		if (User.is_guest_user ()) {
+			GameObject.FindGameObjectWithTag("ProductsManager").GetComponent<ShowPopUpLoginView>().Show();
+			return;
+		}
 		user_view.gameObject.SetActive (true);
 		user_view.OpenIt ("null",true);
 	}
-	
-	// Use this for initialization
-	
 }

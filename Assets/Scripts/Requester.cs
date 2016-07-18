@@ -84,7 +84,7 @@ public class Requester : MonoBehaviour {
 			user.SaveToken(table["auth_token"] as String);
 			int user_id = (int)table["user_id"];
 			user.SaveUserID(user_id.ToString());
-
+			user.SetGuestFalse ();
 			Application.LoadLevel(1);
 			if(!result)
 			{

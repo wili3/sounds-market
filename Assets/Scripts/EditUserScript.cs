@@ -34,6 +34,7 @@ public class EditUserScript : MonoBehaviour {
 		table_child.Add ("last_name", last_name);
 		table.Add ("user", table_child);
 
+		Debug.Log("Saving User...");
 		StartCoroutine (Requester.edituser (User.current_url(), "api/users/" + user_manager.my_user_info ["id"] [0],table));
 	}
 }

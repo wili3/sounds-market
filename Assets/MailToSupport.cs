@@ -13,6 +13,10 @@ public class MailToSupport : MonoBehaviour, IPointerClickHandler {
 
 	public void OnPointerClick (PointerEventData eventData) 
 	{
+		if (User.is_guest_user ()) {
+			GameObject.FindGameObjectWithTag ("ProductsManager").GetComponent<ShowPopUpLoginView> ().Show ();
+			return;
+		}
 		SendEmail ();
 	}
 

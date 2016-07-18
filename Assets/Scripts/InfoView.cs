@@ -13,10 +13,12 @@ public class InfoView : MonoBehaviour {
 	public Text price_text, user_text, rates_text, tittle_text, description_text, distance_text;
 	public GameObject edit_button, mail_button;
 	public List<Texture2D>  current_tex_list;
-	public GameObject right_arrow,left_arrow;
+	public GameObject right_arrow,left_arrow, ref_y;
 	public string current_email;
 
 	public RectTransform rec_ref_target;
+
+	Vector2 mouse_pos, end_pos;
 	// Use this for initialization
 	void Start () 
 	{
@@ -44,8 +46,36 @@ public class InfoView : MonoBehaviour {
 			{
 				rec.anchoredPosition = new Vector2(rec.anchoredPosition.x,rec_ref_target.anchoredPosition.y);
 			}
+
+			if(Input.GetButtonDown("Fire1"))
+			{
+				mouse_pos = Input.mousePosition;
+			}
+
+			if(Input.GetButtonUp("Fire1"))
+			{
+				end_pos = Input.mousePosition;
+				CheckSwipe();
+			}
 		}
 
+	}
+
+	void CheckSwipe()
+	{
+		if (Camera.main.ScreenToWorldPoint (Input.mousePosition).y <= ref_y.transform.position.y)
+			return;
+		if ((end_pos.x - mouse_pos.x) > 50 || (end_pos.x - mouse_pos.x) < -50)
+			return;
+
+		if (end_pos.x > mouse_pos.x) {
+			MoveLeft ();
+		} else {
+			MoveRight();
+		}
+
+		end_pos = Vector2.zero;
+		mouse_pos = Vector2.zero;
 	}
 
 	public void ResizeImage(int index)
@@ -73,31 +103,32 @@ public class InfoView : MonoBehaviour {
 
 	public void MoveRight()
 	{
-		current_image_shown += 1;
-		if(current_image_shown+1 == current_tex_list.Count)
-		{
-			right_arrow.SetActive(false);
-			left_arrow.SetActive(true);
+		if(current_tex_list.Count > 1)
+		if ((current_image_shown + 1) < current_tex_list.Count) {
+			current_image_shown += 1;
+			if (current_image_shown + 1 == current_tex_list.Count) {
+				right_arrow.SetActive (false);
+				left_arrow.SetActive (true);
+			} else {
+				left_arrow.SetActive (true);
+			}
+
+			ResizeImage (current_image_shown);
 		}
-		else
-		{
-			left_arrow.SetActive(true);
-		}
-		ResizeImage (current_image_shown);
 	}
 
 	public void MoveLeft()
 	{
-		current_image_shown -= 1;
-		if(current_image_shown == 0)
-		{
-			right_arrow.SetActive(true);
-			left_arrow.SetActive(false);
+		if(current_tex_list.Count > 1)
+		if (current_image_shown > 0) {
+			current_image_shown -= 1;
+			if (current_image_shown == 0) {
+				right_arrow.SetActive (true);
+				left_arrow.SetActive (false);
+			} else {
+				right_arrow.SetActive (true);
+			}
+			ResizeImage (current_image_shown);
 		}
-		else
-		{
-			right_arrow.SetActive(true);
-		}
-		ResizeImage (current_image_shown);
 	}
 }

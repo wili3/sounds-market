@@ -157,6 +157,14 @@ public class Product : MonoBehaviour, IPointerClickHandler {
 		} else if (unit == 'N') {
 			dist = dist * 0.8684f;
 		}
+
+		float _dist = Mathf.Floor (dist);
+		float temp_dist = dist - _dist;
+		temp_dist = temp_dist * 10;
+		temp_dist = Mathf.Floor (temp_dist);
+
+		dist = _dist + (temp_dist / 10);
+
 		return (dist);
 	}
 

@@ -54,9 +54,10 @@ public class ProductsManager : MonoBehaviour {
 		current_textures = my_textures;
 		sprites = my_products_sprites;
 		image_manager.downloading = false;
-		content_manager.Reset ();
 		image_manager.index = my_products_sprites.Count;
 		total_products_current_view = my_offers.Count;
+		Debug.Log("My offers : " + my_offers.Count.ToString());
+		content_manager.HardReset ();
 	}
 
 	public void ChangeContextToMain()
@@ -65,7 +66,7 @@ public class ProductsManager : MonoBehaviour {
 		current_textures = main_textures;
 		sprites = main_sprites;
 		image_manager.downloading = false;
-		content_manager.Reset ();
+		content_manager.HardReset ();
 		image_manager.index = main_sprites.Count;
 		total_products_current_view = main_offers.Count;
 	}

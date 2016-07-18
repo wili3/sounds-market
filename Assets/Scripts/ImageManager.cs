@@ -422,7 +422,7 @@ public class ImageManager : MonoBehaviour {
 
 	}
 
-	public void ParseDicToHashEdit(Dictionary<string,List<string>> dic_inside, bool sold)
+	public void ParseDicToHashEdit(Dictionary<string,List<string>> dic_inside, bool sold, bool deleted)
 	{
 		Hashtable table = new Hashtable();
 		string title = dic_inside ["tittle"][0];
@@ -430,6 +430,10 @@ public class ImageManager : MonoBehaviour {
 
 		if (sold) {
 			table.Add("sold",true);
+		}
+
+		if (deleted) {
+			table.Add("deleted",true);
 		}
 
 		string description = dic_inside ["desc"][0];
@@ -488,121 +492,131 @@ public class ImageManager : MonoBehaviour {
 			dic_inside = new Dictionary<string, List<string>>();
 			Hashtable table = products_to_set[i] as Hashtable;
 
-			Debug.Log(table.Count);
-			Debug.Log("user id: " + table["user_id"].ToString());	
-
-			List<string> title_list = new List<string>();
-			title_list.Add(table["title"].ToString());
-			dic_inside.Add("tittle", title_list);
-
-			List<string> email_list = new List<string>();
-			try
+			if(!(bool)table["deleted"] && !(bool)table["sold"])
 			{
-				email_list.Add(table["email"].ToString());
-			}
-			catch
-			{
-				email_list.Add("guillempsx2@hotmail.com");
-			}
-			dic_inside.Add("email",email_list);
+				Debug.Log(table.Count);
+				Debug.Log("user id: " + table["user_id"].ToString());	
 
-			List<string> user_id_list = new List<string>();
-			user_id_list.Add(table["user_id"].ToString());
-			dic_inside.Add("user_id",user_id_list);
+				List<string> title_list = new List<string>();
+				title_list.Add(table["title"].ToString());
+				dic_inside.Add("tittle", title_list);
 
-			List<string> desc_list = new List<string>();
-			if(table["description"]!= null){
-				desc_list.Add(table["description"].ToString());
-			} else {
-				desc_list.Add("No descripción.");
-			}
-			dic_inside.Add("desc", desc_list);
-
-			List<string> id_list = new List<string>();
-			id_list.Add(table["id"].ToString());
-			dic_inside.Add("id", id_list);
-
-			Debug.Log("set all data *******");
-
-			List<string> price_list = new List<string>();
-			try{
-				price_list.Add(table["price"].ToString());
-			}
-			catch{
-				price_list.Add(100.ToString());
-			}
-			dic_inside.Add("price",price_list);
-
-			List<string> tags = new List<string>();
-			ArrayList tags_list = (ArrayList)table["category_ids"];
-			for(int j = 0; j < tags_list.Count; j++)
-			{
-				tags.Add((string)tags_list[j]);
-			}
-
-			dic_inside.Add("tags",tags);
-
-			List<string> seller_list = new List<string>();
-			seller_list.Add("Guillem Samni");
-			dic_inside.Add("seller",seller_list);
-
-			Debug.Log("set all data *******");
-
-			List<string> width_list = new List<string>();
-			List<string> height_list = new List<string>();
-			List<string> key_list = new List<string>();
-			List<string> num_of_pics = new List<string>();
-
-			ArrayList images_array = table["images"] as ArrayList;
-			num_of_pics.Add(images_array.Count.ToString());
-
-			for(int j = 0; j < images_array.Count; j++)
-			{
-				Hashtable images_table = images_array[j] as Hashtable;
-				key_list.Add(images_table["key"].ToString());
-				width_list.Add(images_table["width"].ToString());
-				height_list.Add(images_table["height"].ToString());
-			}
-
-			dic_inside.Add("width",width_list);
-			dic_inside.Add("height",height_list);
-			dic_inside.Add("key",key_list);
-			dic_inside.Add("num_of_pics",num_of_pics);
-
-			try{
-				if(table.ContainsKey("lat"))
+				List<string> email_list = new List<string>();
+				try
 				{
-					List<string> lat_list = new List<string>();
-					lat_list.Add(table["lat"].ToString());
-
-					List<string> lng_list = new List<string>();
-					lng_list.Add(table["lng"].ToString());
-					Debug.Log("adding LAT");
-
-					dic_inside.Add("lat",lat_list);
-					dic_inside.Add("lng",lng_list);
+					email_list.Add(table["email"].ToString());
 				}
-			}
-			catch{
+				catch
+				{
+					email_list.Add("guillempsx2@hotmail.com");
+				}
+				dic_inside.Add("email",email_list);
 
+				List<string> user_id_list = new List<string>();
+				user_id_list.Add(table["user_id"].ToString());
+				dic_inside.Add("user_id",user_id_list);
+
+				List<string> desc_list = new List<string>();
+				if(table["description"]!= null){
+					desc_list.Add(table["description"].ToString());
+				} else {
+					desc_list.Add("No descripción.");
+				}
+				dic_inside.Add("desc", desc_list);
+
+				List<string> id_list = new List<string>();
+				id_list.Add(table["id"].ToString());
+				dic_inside.Add("id", id_list);
+
+				Debug.Log("set all data *******");
+
+				List<string> price_list = new List<string>();
+				try{
+					price_list.Add(table["price"].ToString());
+				}
+				catch{
+					price_list.Add(100.ToString());
+				}
+				dic_inside.Add("price",price_list);
+
+				List<string> tags = new List<string>();
+				ArrayList tags_list = (ArrayList)table["category_ids"];
+				for(int j = 0; j < tags_list.Count; j++)
+				{
+					tags.Add((string)tags_list[j]);
+				}
+
+				dic_inside.Add("tags",tags);
+
+				List<string> seller_list = new List<string>();
+				seller_list.Add("Guillem Samni");
+				dic_inside.Add("seller",seller_list);
+
+				Debug.Log("set all data *******");
+
+				List<string> width_list = new List<string>();
+				List<string> height_list = new List<string>();
+				List<string> key_list = new List<string>();
+				List<string> num_of_pics = new List<string>();
+
+				ArrayList images_array = table["images"] as ArrayList;
+				num_of_pics.Add(images_array.Count.ToString());
+
+				for(int j = 0; j < images_array.Count; j++)
+				{
+					Hashtable images_table = images_array[j] as Hashtable;
+					key_list.Add(images_table["key"].ToString());
+					width_list.Add(images_table["width"].ToString());
+					height_list.Add(images_table["height"].ToString());
+				}
+
+				dic_inside.Add("width",width_list);
+				dic_inside.Add("height",height_list);
+				dic_inside.Add("key",key_list);
+				dic_inside.Add("num_of_pics",num_of_pics);
+
+				try{
+					if(table.ContainsKey("lat"))
+					{
+						List<string> lat_list = new List<string>();
+						lat_list.Add(table["lat"].ToString());
+
+						List<string> lng_list = new List<string>();
+						lng_list.Add(table["lng"].ToString());
+						Debug.Log("adding LAT");
+
+						dic_inside.Add("lat",lat_list);
+						dic_inside.Add("lng",lng_list);
+					}
+				}
+				catch{
+
+				}
+				/*for(int j = 0; j < key_list.Count; j++)
+				{
+
+				}*/
+
+				products_manager.current_offers_view.Add(products_manager.current_offers_view.Count.ToString(),dic_inside);
 			}
-			/*for(int j = 0; j < key_list.Count; j++)
+			else
 			{
-
-			}*/
-
-			products_manager.current_offers_view.Add(products_manager.current_offers_view.Count.ToString(),dic_inside);
+				products_manager.total_products_current_view--;
+			}
 		}
 		products_manager.ChangeContextToMain ();
 		products_manager.ChangeContextToCurrent ();
-		RequestMyProducts ();
 	}
 	public void RequestMyProducts()
 	{
-		if(products_manager.my_offers.Count == 0)StartCoroutine(Requester.getmyproducts(User.current_url(),"api/products/search?user_id=" + PlayerPrefs.GetString("user_id"),null));
+		StartCoroutine(Requester.getmyproducts(User.current_url(),"api/products/search?user_id=" + PlayerPrefs.GetString("user_id"),null));
 	}
 	public void ParseHashToDicMyProducts()
 	{
+		products_manager.my_offers.Clear ();
+		products_manager.my_products_sprites.Clear ();
+		products_manager.my_textures.Clear ();
+		products_manager.ChangeContextToMyOffers ();
 		Dictionary<string,List<string>> dic_inside = new Dictionary<string, List<string>>();
 		/*
 		dic_inside.Add ("num_of_pics", num_of_pics_list);
@@ -614,91 +628,96 @@ public class ImageManager : MonoBehaviour {
 		{
 			dic_inside = new Dictionary<string, List<string>>();
 			Hashtable table = products_to_set[i] as Hashtable;
-			
-			Debug.Log(table.Count);
-			Debug.Log("user id: " + table["user_id"].ToString());	
-			
-			List<string> title_list = new List<string>();
-			title_list.Add(table["title"].ToString());
-			dic_inside.Add("tittle", title_list);
-			
-			List<string> email_list = new List<string>();
-			try
-			{
-				email_list.Add(table["email"].ToString());
-			}
-			catch
-			{
-				email_list.Add("guillempsx2@hotmail.com");
-			}
-			dic_inside.Add("email",email_list);
-			
-			List<string> user_id_list = new List<string>();
-			user_id_list.Add(table["user_id"].ToString());
-			dic_inside.Add("user_id",user_id_list);
-			
-			List<string> desc_list = new List<string>();
-			desc_list.Add(table["description"].ToString());
-			dic_inside.Add("desc", desc_list);
 
-			List<string> id_list = new List<string>();
-			id_list.Add(table["id"].ToString());
-			dic_inside.Add("id", id_list);
-
-			Debug.Log("set all data *******");
-			
-			List<string> price_list = new List<string>();
-			try{
-				price_list.Add(table["price"].ToString());
-			}
-			catch{
-				price_list.Add(100.ToString());
-			}
-			dic_inside.Add("price",price_list);
-			
-			List<string> tags = new List<string>();
-			ArrayList tags_list = (ArrayList)table["category_ids"];
-			for(int j = 0; j < tags_list.Count; j++)
+			if(!(bool)table["deleted"] && !(bool)table["sold"])
 			{
-				Debug.Log("TAG: "+ (string)tags_list[j]);
-				tags.Add((string)tags_list[j]);
-			}
+				Debug.Log(table.Count);
+				Debug.Log("user id: " + table["user_id"].ToString());	
+				
+				List<string> title_list = new List<string>();
+				title_list.Add(table["title"].ToString());
+				dic_inside.Add("tittle", title_list);
+				
+				List<string> email_list = new List<string>();
+				try
+				{
+					email_list.Add(table["email"].ToString());
+				}
+				catch
+				{
+					email_list.Add("guillempsx2@hotmail.com");
+				}
+				dic_inside.Add("email",email_list);
+				
+				List<string> user_id_list = new List<string>();
+				user_id_list.Add(table["user_id"].ToString());
+				dic_inside.Add("user_id",user_id_list);
+				
+				List<string> desc_list = new List<string>();
+				desc_list.Add(table["description"].ToString());
+				dic_inside.Add("desc", desc_list);
 
-			dic_inside.Add("tags",tags);
-			
-			List<string> seller_list = new List<string>();
-			seller_list.Add("Guillem Samni");
-			dic_inside.Add("seller",seller_list);
-			
-			Debug.Log("set all data *******");
-			
-			List<string> width_list = new List<string>();
-			List<string> height_list = new List<string>();
-			List<string> key_list = new List<string>();
-			List<string> num_of_pics = new List<string>();
-			
-			ArrayList images_array = table["images"] as ArrayList;
-			num_of_pics.Add(images_array.Count.ToString());
-			
-			for(int j = 0; j < images_array.Count; j++)
-			{
-				Hashtable images_table = images_array[j] as Hashtable;
-				key_list.Add(images_table["key"].ToString());
-				width_list.Add(images_table["width"].ToString());
-				height_list.Add(images_table["height"].ToString());
-			}
-			
-			dic_inside.Add("width",width_list);
-			dic_inside.Add("height",height_list);
-			dic_inside.Add("key",key_list);
-			dic_inside.Add("num_of_pics",num_of_pics);
-			
-			/*for(int j = 0; j < key_list.Count; j++)
-			{
+				List<string> id_list = new List<string>();
+				id_list.Add(table["id"].ToString());
+				dic_inside.Add("id", id_list);
 
-			}*/
-			
-			products_manager.my_offers.Add(products_manager.my_offers.Count.ToString(),dic_inside);
+				Debug.Log("set all data *******");
+				
+				List<string> price_list = new List<string>();
+				try{
+					price_list.Add(table["price"].ToString());
+				}
+				catch{
+					price_list.Add(100.ToString());
+				}
+				dic_inside.Add("price",price_list);
+				
+				List<string> tags = new List<string>();
+				ArrayList tags_list = (ArrayList)table["category_ids"];
+				for(int j = 0; j < tags_list.Count; j++)
+				{
+					Debug.Log("TAG: "+ (string)tags_list[j]);
+					tags.Add((string)tags_list[j]);
+				}
+
+				dic_inside.Add("tags",tags);
+				
+				List<string> seller_list = new List<string>();
+				seller_list.Add("Guillem Samni");
+				dic_inside.Add("seller",seller_list);
+				
+				Debug.Log("set all data *******");
+				
+				List<string> width_list = new List<string>();
+				List<string> height_list = new List<string>();
+				List<string> key_list = new List<string>();
+				List<string> num_of_pics = new List<string>();
+				
+				ArrayList images_array = table["images"] as ArrayList;
+				num_of_pics.Add(images_array.Count.ToString());
+				
+				for(int j = 0; j < images_array.Count; j++)
+				{
+					Hashtable images_table = images_array[j] as Hashtable;
+					key_list.Add(images_table["key"].ToString());
+					width_list.Add(images_table["width"].ToString());
+					height_list.Add(images_table["height"].ToString());
+				}
+				
+				dic_inside.Add("width",width_list);
+				dic_inside.Add("height",height_list);
+				dic_inside.Add("key",key_list);
+				dic_inside.Add("num_of_pics",num_of_pics);
+				
+				/*for(int j = 0; j < key_list.Count; j++)
+				{
+
+				}*/
+				
+				products_manager.my_offers.Add(products_manager.my_offers.Count.ToString(),dic_inside);
+				products_manager.ChangeContextToMyOffers ();
+				products_manager.ChangeContextToCurrent();
+			}
 		}
 	}
 }

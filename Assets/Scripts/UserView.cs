@@ -65,11 +65,13 @@ public class UserView : MonoBehaviour {
 	{
 		closed = false;
 		side_menu.closed = true;
-
+		Debug.Log ("load my user INFO 1");
+		my_user = is_my_user;
 		if (!is_my_user) {
 			LoadUserInfo ();
 		} else {
 			LoadMyUserInfo();
+			Debug.Log ("load my user INFO 2");
 		}
 	}
 
@@ -92,13 +94,14 @@ public class UserView : MonoBehaviour {
 		edit_button.gameObject.SetActive (false);
 		user_name.interactable = false;
 		user_mail.interactable = false;
-
+		my_user = false;
 		StartCoroutine (load_user_pic.GetOtherUserPic (users_manager.other_users_info [info_view.current_user_id] ["facebook_profile_pic"][0]));
 		// HERE I SHOULD LOAD THE RATES TO THE STARS
 	}
 
 	public void LoadMyUserInfo ()
 	{
+		Debug.Log ("load my user INFO 3");
 		user_name.text = users_manager.my_user_info ["name"] [0];
 		user_mail.text = users_manager.my_user_info ["email"] [0];
 

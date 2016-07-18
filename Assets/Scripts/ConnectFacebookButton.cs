@@ -9,6 +9,11 @@ public class ConnectFacebookButton : MonoBehaviour ,IPointerClickHandler {
 
 	public FacebookInitializer fb_initializer;
 
+	void Start()
+	{
+		fb_initializer = GameObject.FindGameObjectWithTag ("Player").GetComponent<FacebookInitializer>();
+	}
+
 	public void OnPointerClick (PointerEventData eventData) 
 	{
 		fb_initializer.CallFBLogin ();

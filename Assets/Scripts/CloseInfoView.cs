@@ -11,7 +11,7 @@ public class CloseInfoView : MonoBehaviour ,IPointerClickHandler {
 
 	void Start ()
 	{
-		info_view = this.transform.parent.parent.GetComponent<InfoView> ();
+		info_view = this.transform.parent.GetComponent<InfoView> ();
 	}
 	
 	public void OnPointerClick (PointerEventData eventData) 
