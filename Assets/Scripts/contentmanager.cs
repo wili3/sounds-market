@@ -77,7 +77,7 @@ public class contentmanager : MonoBehaviour {
 				products[index_objects[0]].index = object_ids[object_ids.Length - 1] + 1;
 
 
-			content [index_objects [0]].sizeDelta = new Vector2(971,calculateProportion(float.Parse(products_manager.current_offers_view[(object_ids[object_ids.Length - 1] + 1).ToString()]["height"][0]),float.Parse(products_manager.current_offers_view[(object_ids[object_ids.Length - 1] + 1).ToString()]["height"][0]),971));
+			content [index_objects [0]].sizeDelta = new Vector2(971,calculateProportion(float.Parse(products_manager.current_offers_view[(object_ids[object_ids.Length - 1] + 1).ToString()]["width"][0]),float.Parse(products_manager.current_offers_view[(object_ids[object_ids.Length - 1] + 1).ToString()]["height"][0]),971));
 			products[index_objects[0]].image.rectTransform.sizeDelta = content [index_objects [0]].sizeDelta;
 			float temp_offset = calculateProportion(float.Parse(products_manager.current_offers_view[(object_ids[object_ids.Length - 1] + 1).ToString()]["height"][0]),content[0].sizeDelta.x,float.Parse(products_manager.current_offers_view[(object_ids[object_ids.Length - 1] + 1).ToString()]["width"][0])+ 250) ;
 		
@@ -127,7 +127,7 @@ public class contentmanager : MonoBehaviour {
 
 			content [index_objects [3]].sizeDelta = new Vector2(971, calculateProportion(float.Parse(products_manager.current_offers_view[(object_ids[0] - 1).ToString()]["width"][0]),float.Parse(products_manager.current_offers_view[(object_ids[0] - 1).ToString()]["height"][0]),971));
 			products[index_objects[3]].image.rectTransform.sizeDelta = content [index_objects [3]].sizeDelta;
-				float temp_offset = calculateProportion(float.Parse(products_manager.current_offers_view[(object_ids[0] - 1).ToString()]["height"][0]),content[0].sizeDelta.x,float.Parse(products_manager.current_offers_view[(object_ids[0] - 1).ToString()]["width"][0])) + 250; 
+				float temp_offset = calculateProportion(float.Parse(products_manager.current_offers_view[(object_ids[0] - 1).ToString()]["width"][0]),content[0].sizeDelta.x,float.Parse(products_manager.current_offers_view[(object_ids[0] - 1).ToString()]["height"][0])) + 250; 
 
 				float dist;
 				products [index_objects [3]].calculateDist();
@@ -211,6 +211,7 @@ public class contentmanager : MonoBehaviour {
 
 	public void Reset()
 	{
+		float content_height = 0;
 		//ref_scroll.scroll.normalizedPosition = new Vector2 (0.5f, 1);
 		for(int i = 0; i < content.Length; i++)
 		{
@@ -242,6 +243,21 @@ public class contentmanager : MonoBehaviour {
 				products[i].image.texture = null;
 				content[i].gameObject.SetActive(false);
 			}
+		}
+
+		for (int i = 0; i < products_manager.current_offers_view.Count; i++)
+		{
+			content_height += (calculateProportion(float.Parse(products_manager.current_offers_view[i.ToString()]["width"][0]),float.Parse(products_manager.current_offers_view[i.ToString()]["height"][0]),971) + 22.5f);
+			if(i == products_manager.current_offers_view.Count - 1)
+			{
+				content_height += (calculateProportion(float.Parse(products_manager.current_offers_view[i.ToString()]["width"][0]),float.Parse(products_manager.current_offers_view[i.ToString()]["height"][0]),971)/2);
+			}
+		}
+
+		this.GetComponent<RectTransform> ().sizeDelta = new Vector2 (this.GetComponent<RectTransform> ().sizeDelta.x, content_height);
+
+		for (int i = 0; i < content.Length; i++) {
+			content[i].anchoredPosition = positions[i];
 		}
 	}
 }

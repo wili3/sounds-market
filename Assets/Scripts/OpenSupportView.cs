@@ -13,6 +13,7 @@ public class OpenSupportView : MonoBehaviour ,IPointerClickHandler {
 	{
 		support_view.gameObject.SetActive (true);
 		support_view.closed = false;
+		support_view.side_menu.closed = true;
 	}
 	
 	// Use this for initialization

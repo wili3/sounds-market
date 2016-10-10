@@ -15,6 +15,7 @@ public class OpenTagView : MonoBehaviour ,IPointerClickHandler {
 		tag_view.gameObject.SetActive (true);
 		tag_view.closed = false;
 		tag_view.tag_view_controller.Initialize (is_search);
+		tag_view.side_menu.closed = true;
 	}
 	
 	// Use this for initialization

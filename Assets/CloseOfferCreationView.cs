@@ -10,7 +10,7 @@ public class CloseOfferCreationView : MonoBehaviour ,IPointerClickHandler {
 
 	public void OnPointerClick (PointerEventData eventData) 
 	{
+		oc_view_controller.Close ();
 		oc_view_controller.closed = true;
-		info_view.edit_button.SetActive (false);
 	}
 }

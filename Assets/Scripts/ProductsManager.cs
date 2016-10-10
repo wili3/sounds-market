@@ -17,6 +17,9 @@ public class ProductsManager : MonoBehaviour {
 	public Dictionary<string,Dictionary<string,List<string>>> my_offers = new Dictionary<string, Dictionary<string, List<string>>>();
 	public Dictionary<string,List<Texture2D>> my_textures = new Dictionary<string, List<Texture2D>>();
 
+	public Dictionary<string,Dictionary<string,List<string>>> other_user_offers = new Dictionary<string,Dictionary<string,List<string>>>();
+	public Dictionary<string,List<Texture2D>> other_user_textures = new Dictionary<string,List<Texture2D>>();
+
 	public int total_products_current_view = 15;
 	public ImageManager image_manager;
 	public contentmanager content_manager;

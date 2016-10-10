@@ -7,7 +7,7 @@ public class UserView : MonoBehaviour {
 
 	public sidemenu side_menu;
 	public float target_position = -259, initial_position, acceleration = 80;
-	public RectTransform rec;
+	public RectTransform rec, content_rec;
 	public bool closed = true;
 	public int current_index_user = -1;
 	public RawImage profile_pic;
@@ -21,9 +21,14 @@ public class UserView : MonoBehaviour {
 	public Button edit_button;
 	public LoadUserPic load_user_pic;
 
-	public int num_of_total_ratings, num_of_5, num_of_4, num_of_3, num_of_2, num_of_1, average;
+	public int num_of_total_ratings, num_of_5, num_of_4, num_of_3, num_of_2, num_of_1, average, total_height = 400;
+	public List<GameObject> instantiated_offers;
+	public GameObject prefab_scroll_item, scroll_view;
+
 
 	public RectTransform rec_ref_target;
+	public ImageManager image_manager;
+	public GameObject button_update_location;
 	// Use this for initialization
 	void Start () {
 		rec = this.GetComponent<RectTransform> ();
@@ -63,27 +68,24 @@ public class UserView : MonoBehaviour {
 
 	public void OpenIt(string index, bool is_my_user)
 	{
+		DisableStars ();
+		EnableStars ();
 		closed = false;
 		side_menu.closed = true;
-		Debug.Log ("load my user INFO 1");
 		my_user = is_my_user;
 		if (!is_my_user) {
 			LoadUserInfo ();
 		} else {
 			LoadMyUserInfo();
-			Debug.Log ("load my user INFO 2");
 		}
 	}
 
 	public void LoadUserInfo()
 	{
-		Debug.Log (info_view.current_user_id);
+		button_update_location.SetActive (false);
+		scroll_view.gameObject.SetActive (true);
 		users_manager.AskUser (info_view.current_user_id.ToString());
-		Debug.Log (users_manager.other_users_info [info_view.current_user_id].Count);
-		Debug.Log (users_manager.other_users_info [info_view.current_user_id]["name"].Count);
 		user_name.text = users_manager.other_users_info [info_view.current_user_id] ["name"] [0];
-		Debug.Log(" email : " + users_manager.other_users_info [info_view.current_user_id] ["email"] [0]);
-		Debug.Log(" fb profile pic : " + users_manager.other_users_info [info_view.current_user_id] ["facebook_profile_pic"] [0]);
 		if (users_manager.other_users_info [info_view.current_user_id] ["email"] [0] != null) {
 			user_mail.text = users_manager.other_users_info [info_view.current_user_id] ["email"] [0];
 		} else {
@@ -96,12 +98,14 @@ public class UserView : MonoBehaviour {
 		user_mail.interactable = false;
 		my_user = false;
 		StartCoroutine (load_user_pic.GetOtherUserPic (users_manager.other_users_info [info_view.current_user_id] ["facebook_profile_pic"][0]));
+		StartCoroutine (Requester.getotheruserproducts(User.current_url(), "api/products/search?user_id=" + info_view.current_user_id.ToString(), null));
 		// HERE I SHOULD LOAD THE RATES TO THE STARS
 	}
 
 	public void LoadMyUserInfo ()
 	{
-		Debug.Log ("load my user INFO 3");
+		button_update_location.SetActive (true);
+		scroll_view.gameObject.SetActive (false);
 		user_name.text = users_manager.my_user_info ["name"] [0];
 		user_mail.text = users_manager.my_user_info ["email"] [0];
 
@@ -139,9 +143,17 @@ public class UserView : MonoBehaviour {
 
 		user_rates.text = num_of_total_ratings.ToString() + " Valoraciones";
 		float average_not_ceiled = 0;
-		if ( num_of_total_ratings > 0)average_not_ceiled = ( (num_of_1) + (num_of_2*2) + (num_of_3*3) + (num_of_4*4) + (num_of_5*5))/num_of_total_ratings;
-		average = Mathf.FloorToInt (average_not_ceiled);
-		SetStars ();
+		if (num_of_total_ratings > 0)
+		{
+			average_not_ceiled = ((num_of_1) + (num_of_2 * 2) + (num_of_3 * 3) + (num_of_4 * 4) + (num_of_5 * 5)) / num_of_total_ratings;
+			average = Mathf.FloorToInt (average_not_ceiled);
+
+			SetStars ();
+		}
+		else
+		{
+			SetAllStarsGrey();
+		}
 	}
 
 	public void LoadMyUserRatings()
@@ -200,7 +212,16 @@ public class UserView : MonoBehaviour {
 
 	public void SetStars()
 	{
-		stars [0].GetComponent<StarScript> ().SetStars (average);
+		for (int i = 0; i < 5; i++) {
+			if(i < average)
+			{
+				stars[i].color = Color.yellow;
+			}
+			else
+			{
+				stars[i].color = Color.grey;
+			}
+		}
 	}
 
 	void SetAllStarsGrey()
@@ -217,5 +238,37 @@ public class UserView : MonoBehaviour {
 		{
 			stars[i].GetComponent<StarScript>().alreadyRated = true;
 		}
+	}
+
+	public void InstantiateOtherUserProducts()
+	{
+		image_manager.index_other_user_products = 0;
+		image_manager.product_images_user_view.Clear ();
+		for(int i = 0; i < instantiated_offers.Count; i++)
+		{
+			Destroy(instantiated_offers[i]);
+		}
+
+		instantiated_offers.Clear ();
+
+		content_rec.sizeDelta = new Vector2 (content_rec.sizeDelta.x, (total_height * products_manager.other_user_offers.Count));
+
+		for(int i = 0; i < products_manager.other_user_offers.Count; i++)
+		{
+			GameObject temp_obj = Instantiate(prefab_scroll_item);
+			temp_obj.transform.SetParent(content_rec.transform);
+			temp_obj.GetComponent<RectTransform>().anchoredPosition = new Vector2(0, -total_height * i);
+			temp_obj.GetComponent<ScrollItem>().Initialize(products_manager.other_user_offers[i.ToString()]);
+			image_manager.product_images_user_view.Add(products_manager.other_user_offers[i.ToString()]["key"][0]);
+			Debug.Log(i+": " + products_manager.other_user_offers[i.ToString()]["key"][0]);
+			temp_obj.transform.localScale = new Vector3(1,1,1);
+			instantiated_offers.Add(temp_obj);
+		}
+		// here i will make a loop foreach products in otheruserproducts, and Instantiate a prefab, set its position and pass the info to the prefab initializer
+	}
+
+	public void GetLocation()
+	{
+		GetLocationScript.Instance.RequestLocation ();
 	}
 }

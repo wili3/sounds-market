@@ -372,4 +372,15 @@ public class OfferCreationViewController : MonoBehaviour {
 		}
 		tags_list = tags;
 	}
+
+	public void Close()
+	{
+		if (edit_mode)
+		{
+			info_view.edit_button.gameObject.SetActive(true);
+			edit_button.gameObject.SetActive(false);
+			sold_button.gameObject.SetActive(false);
+			clearCreation ();
+		}
+	}
 }

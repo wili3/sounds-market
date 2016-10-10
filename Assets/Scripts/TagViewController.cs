@@ -97,8 +97,8 @@ public class TagViewController : MonoBehaviour {
 				dropdown[i].options.Clear();
 			}
 		}
-		button_search.SetActive (false);
-		button_add_tags.SetActive (false);
+		//button_search.SetActive (false);
+		//button_add_tags.SetActive (false);
 		able_to_submit = false;
 	}
 
@@ -159,10 +159,13 @@ public class TagViewController : MonoBehaviour {
 	public void Initialize(bool search)
 	{
 		is_search = search;
-		if (search)
+		if (search) {
 			button_search.SetActive (true);
-		else
+			button_add_tags.SetActive (false);
+		} else {
 			button_add_tags.SetActive (true);
+			button_search.SetActive (false);
+		}
 		last_type = search;
 	}
 

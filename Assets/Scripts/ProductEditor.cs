@@ -26,8 +26,15 @@ public class ProductEditor : MonoBehaviour {
 
 		List<string> temp_tags = products_manager.current_offers_view [index.ToString ()] ["tags"];
 
-		for (int i = 0; i < temp_tags.Count; i++) {
-			temp_tags[i] = tag_view.convert_dic[temp_tags[i]];
+		try{
+			for (int i = 0; i < temp_tags.Count; i++) {
+				Debug.Log("temp_tags i : " + temp_tags[i]);
+				Debug.Log("temp tags converted i : " + tag_view.convert_dic[temp_tags[i]]);
+				temp_tags[i] = tag_view.convert_dic[temp_tags[i]];
+			}
+		}
+		catch{
+			Debug.Log("already edited");
 		}
 
 		oc_viewcontroller.ShowTags (temp_tags);

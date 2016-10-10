@@ -22,20 +22,22 @@ public class ImageManager : MonoBehaviour {
 	public int[] heights;
 
 	public AmazonS3Client client;
-	public int index;
-	public bool downloading, uploading, downloading_detail_images, checkhash = false;
+	public int index, index_other_user_products;
+	public bool downloading, uploading, downloading_detail_images, downloading_other_users_products_images, checkhash = false;
 
 	public contentmanager content;
 	public ProductsManager products_manager;
 	public InfoView info_view;
 	public TagViewController tag_view_controller;
+	public UserView user_view;
 
-	public List<string> images_to_upload;
+	public List<string> images_to_upload, product_images_user_view;
 	public Dictionary<string,string> product_detail_images = new Dictionary<string, string>();
 	public UsersManager user_manager;
 
-	public Hashtable products_table, my_products_table;
+	public Hashtable products_table, my_products_table, other_user_products_table;
 	public ArrayList products_to_set;
+	public GameObject content_text;
 	// Use this for initialization
 	void Start () {
 
@@ -53,7 +55,7 @@ public class ImageManager : MonoBehaviour {
 		initialize_fake_data ();
 		set_fake_data ();
 		set_user_fake_data ();
-		client = new AmazonS3Client ("AKIAIPGP5PKTWVUNNDUA", "4/y0TGuGD+HOht+aS7t3aRJgyj45ZnOCeOPVqz48", RegionEndpoint.EUWest1);
+		client = new AmazonS3Client ("", "", RegionEndpoint.EUWest1);
 	}
 
 	void Update()
@@ -64,7 +66,7 @@ public class ImageManager : MonoBehaviour {
 			ParseHashToDic();
 		}
 
-		if (uploading || downloading_detail_images)
+		if (uploading || downloading_detail_images || downloading_other_users_products_images)
 			return;
 
 		if (images_to_upload.Count > 0)
@@ -72,6 +74,12 @@ public class ImageManager : MonoBehaviour {
 			StartCoroutine (PostObject (images_to_upload [0]));
 			uploading = true;
 		}
+
+		if (product_images_user_view.Count > 0 && index_other_user_products < product_images_user_view.Count) {
+			StartCoroutine (GetOtherUserProductsImages(product_images_user_view[index_other_user_products]));
+			downloading_other_users_products_images = true;
+		}
+
 		if(product_detail_images.Count > 0)
 		{
 			for(int i = 0; i < 4; i++)
@@ -84,7 +92,6 @@ public class ImageManager : MonoBehaviour {
 				}
 			}
 		}
-
 	}
 
 	public IEnumerator GetObject_async(string key)
@@ -170,6 +177,45 @@ public class ImageManager : MonoBehaviour {
 			}
 		});
 		yield return null;
+	}
+
+	public IEnumerator GetOtherUserProductsImages(string key)
+	{
+		client.GetObjectAsync("github-wili3-issues", "sounds-market/" + key, (responseObj) =>
+		                      {
+			string data = null;
+			GetObjectResponse response = responseObj.Response;
+			if (response.ResponseStream != null)
+			{
+				using (BinaryReader bReader = new BinaryReader(response.ResponseStream))
+				{
+					byte [] buffer = bReader.ReadBytes((int)response.ResponseStream.Length);
+					// HERE I WILL CALL A FUNCTION WHERE THE IMAGE WILL BE CREATED AND ASSIGNED TO THE IMAGE
+					CreateImage(buffer);
+				}
+			}
+		});
+		yield return null;
+	}
+
+	private void CreateImage(byte[] buffer)
+	{
+		float width = float.Parse (products_manager.other_user_offers [index_other_user_products.ToString ()] ["width"] [0]);
+		float height = float.Parse (products_manager.other_user_offers [index_other_user_products.ToString ()] ["height"] [0]);
+		Texture2D tex = new Texture2D (Mathf.CeilToInt(width), Mathf.CeilToInt(height));
+		tex.LoadImage (buffer);
+		user_view.instantiated_offers [index_other_user_products].GetComponent<ScrollItem> ().image.texture = tex;
+		downloading_other_users_products_images = false;
+
+		RectTransform rec = user_view.instantiated_offers [index_other_user_products].GetComponent<ScrollItem> ().image.GetComponent<RectTransform> ();
+
+		if (width > height) {
+			rec.sizeDelta = new Vector2 ((rec.sizeDelta.y * width) / height, rec.sizeDelta.y);
+		} else {
+			rec.sizeDelta = new Vector2 (rec.sizeDelta.x, (rec.sizeDelta.y * height) / width);
+		}
+
+		index_other_user_products++;
 	}
 
 	private IEnumerator createSprite_detail(byte[] buffer, int index)
@@ -475,6 +521,7 @@ public class ImageManager : MonoBehaviour {
 
 	public void ParseHashToDic()
 	{
+		content_text.SetActive(true);
 		products_manager.main_offers.Clear ();
 		products_manager.main_sprites.Clear ();
 		products_manager.main_textures.Clear ();
@@ -508,7 +555,7 @@ public class ImageManager : MonoBehaviour {
 				}
 				catch
 				{
-					email_list.Add("guillempsx2@hotmail.com");
+					email_list.Add("no email");
 				}
 				dic_inside.Add("email",email_list);
 
@@ -604,6 +651,11 @@ public class ImageManager : MonoBehaviour {
 				products_manager.total_products_current_view--;
 			}
 		}
+
+		if (products_manager.total_products_current_view > 0) {
+			content_text.SetActive(false);
+		}
+
 		products_manager.ChangeContextToMain ();
 		products_manager.ChangeContextToCurrent ();
 	}
@@ -613,6 +665,7 @@ public class ImageManager : MonoBehaviour {
 	}
 	public void ParseHashToDicMyProducts()
 	{
+		content_text.SetActive(true);
 		products_manager.my_offers.Clear ();
 		products_manager.my_products_sprites.Clear ();
 		products_manager.my_textures.Clear ();
@@ -717,7 +770,113 @@ public class ImageManager : MonoBehaviour {
 				products_manager.my_offers.Add(products_manager.my_offers.Count.ToString(),dic_inside);
 				products_manager.ChangeContextToMyOffers ();
 				products_manager.ChangeContextToCurrent();
+
+				if(products_manager.my_offers.Count> 0)
+				{
+					content_text.SetActive(false);
+				}
 			}
 		}
+	}
+
+	public void ParseHashToDicOtherUserProducts()
+	{
+		products_manager.other_user_offers.Clear ();
+		products_manager.other_user_textures.Clear ();
+
+		Dictionary<string,List<string>> dic_inside = new Dictionary<string, List<string>>();
+
+		products_to_set = other_user_products_table["products"] as ArrayList;
+		
+		
+		for(int i = 0; i < products_to_set.Count; i++)
+		{
+			dic_inside = new Dictionary<string, List<string>>();
+			Hashtable table = products_to_set[i] as Hashtable;
+			
+			if(!(bool)table["deleted"] && !(bool)table["sold"])
+			{
+				Debug.Log(table.Count);
+				Debug.Log("user id: " + table["user_id"].ToString());	
+				
+				List<string> title_list = new List<string>();
+				title_list.Add(table["title"].ToString());
+				dic_inside.Add("tittle", title_list);
+				
+				List<string> email_list = new List<string>();
+				try
+				{
+					email_list.Add(table["email"].ToString());
+				}
+				catch
+				{
+					email_list.Add("guillempsx2@hotmail.com");
+				}
+				dic_inside.Add("email",email_list);
+				
+				List<string> user_id_list = new List<string>();
+				user_id_list.Add(table["user_id"].ToString());
+				dic_inside.Add("user_id",user_id_list);
+				
+				List<string> desc_list = new List<string>();
+				desc_list.Add(table["description"].ToString());
+				dic_inside.Add("desc", desc_list);
+				
+				List<string> id_list = new List<string>();
+				id_list.Add(table["id"].ToString());
+				dic_inside.Add("id", id_list);
+				
+				Debug.Log("set all data *******");
+				
+				List<string> price_list = new List<string>();
+				try{
+					price_list.Add(table["price"].ToString());
+				}
+				catch{
+					price_list.Add(100.ToString());
+				}
+				dic_inside.Add("price",price_list);
+				
+				List<string> tags = new List<string>();
+				ArrayList tags_list = (ArrayList)table["category_ids"];
+				for(int j = 0; j < tags_list.Count; j++)
+				{
+					Debug.Log("TAG: "+ (string)tags_list[j]);
+					tags.Add((string)tags_list[j]);
+				}
+				
+				dic_inside.Add("tags",tags);
+				
+				List<string> seller_list = new List<string>();
+				seller_list.Add("Guillem Samni");
+				dic_inside.Add("seller",seller_list);
+				
+				Debug.Log("set all data *******");
+				
+				List<string> width_list = new List<string>();
+				List<string> height_list = new List<string>();
+				List<string> key_list = new List<string>();
+				List<string> num_of_pics = new List<string>();
+				
+				ArrayList images_array = table["images"] as ArrayList;
+				num_of_pics.Add(images_array.Count.ToString());
+				
+				for(int j = 0; j < images_array.Count; j++)
+				{
+					Hashtable images_table = images_array[j] as Hashtable;
+					key_list.Add(images_table["key"].ToString());
+					width_list.Add(images_table["width"].ToString());
+					height_list.Add(images_table["height"].ToString());
+				}
+				
+				dic_inside.Add("width",width_list);
+				dic_inside.Add("height",height_list);
+				dic_inside.Add("key",key_list);
+				dic_inside.Add("num_of_pics",num_of_pics);
+				
+				products_manager.other_user_offers.Add(products_manager.other_user_offers.Count.ToString(), dic_inside);
+			}
+		}
+		GameObject.FindGameObjectWithTag ("UserView").GetComponent<UserView> ().InstantiateOtherUserProducts ();
 	}
 }

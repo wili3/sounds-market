@@ -63,9 +63,9 @@ public class InfoView : MonoBehaviour {
 
 	void CheckSwipe()
 	{
-		if (Camera.main.ScreenToWorldPoint (Input.mousePosition).y <= ref_y.transform.position.y)
+		if(Vector2.Distance(mouse_pos,end_pos) < 50)
 			return;
-		if ((end_pos.x - mouse_pos.x) > 50 || (end_pos.x - mouse_pos.x) < -50)
+		if (Camera.main.ScreenToWorldPoint (Input.mousePosition).y <= ref_y.transform.position.y)
 			return;
 
 		if (end_pos.x > mouse_pos.x) {
@@ -130,5 +130,10 @@ public class InfoView : MonoBehaviour {
 			}
 			ResizeImage (current_image_shown);
 		}
+	}
+
+	public void Pop()
+	{
+		Portrait.Instance.Pop (current_image.texture);
 	}
 }

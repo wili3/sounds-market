@@ -142,6 +142,8 @@ public class Requester : MonoBehaviour {
 			request.SetHeader ("X-Lng", PlayerPrefs.GetString ("Longitude"));
 		}
 		request.SetHeader ("X-Lng", PlayerPrefs.GetString ("Longitude"));
+
+		Debug.Log("Lat : " +  PlayerPrefs.GetString ("Latitude") + "   Long: " +  PlayerPrefs.GetString ("Longitude"));
 		
 		request.synchronous = true;
 		request.Send((request_obj)=>{
@@ -205,6 +207,49 @@ public class Requester : MonoBehaviour {
 				ImageManager image_manager = GameObject.FindGameObjectWithTag("ImageManager").GetComponent<ImageManager>();
 				image_manager.my_products_table = table;
 				image_manager.ParseHashToDicMyProducts();
+			}
+		});
+		yield return request;
+	}
+
+	public static IEnumerator getotheruserproducts(string url, string endpoint, Hashtable parameters = null)
+	{
+		HTTP.Request request = new HTTP.Request("get", url + endpoint,parameters);
+		if (parameters != null) {
+			request = new HTTP.Request ("get", url + endpoint, parameters);
+		} else {
+			request = new HTTP.Request ("get", url + endpoint);
+		}
+		
+		Debug.Log (url + endpoint);
+		request.SetHeader ("Content-Type", "application/json");
+		request.SetHeader ("X-Auth-Token", PlayerPrefs.GetString("access_token"));
+		if (PlayerPrefs.GetString ("Latitude") != null) {
+			request.SetHeader ("X-Lat", PlayerPrefs.GetString ("Latitude"));
+			request.SetHeader ("X-Lng", PlayerPrefs.GetString ("Longitude"));
+		}
+		request.SetHeader ("X-Lng", PlayerPrefs.GetString ("Longitude"));
+		
+		request.synchronous = true;
+		request.Send((request_obj)=>{
+			Debug.Log("REQUEST MADE" + request_obj.response.Text);
+			Debug.Log("REQUEST MADE" + request_obj.response.status);
+			
+			bool result = false;
+			
+			Hashtable table = (Hashtable)JSON.JsonDecode(request.response.Text, ref result );
+			
+			if(!result)
+			{
+				//here will go a retry
+				Debug.Log("CANNOT PARSE JSON");
+				return;
+			}
+			else
+			{
+				ImageManager image_manager = GameObject.FindGameObjectWithTag("ImageManager").GetComponent<ImageManager>();
+				image_manager.other_user_products_table = table;
+				image_manager.ParseHashToDicOtherUserProducts();
 			}
 		});
 		yield return request;
