@@ -11,7 +11,7 @@ public class CloseUserView : MonoBehaviour ,IPointerClickHandler {
 
 	void Start()
 	{
-		user_view = this.transform.parent.parent.GetComponent<UserView> ();
+		user_view = this.transform.parent.GetComponent<UserView> ();
 	}
 
 	public void OnPointerClick (PointerEventData eventData) 

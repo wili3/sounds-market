@@ -5,6 +5,7 @@ using UnityEngine.UI;
 
 public class UserView : MonoBehaviour {
 
+	public Color starsColor;
 	public sidemenu side_menu;
 	public float target_position = -259, initial_position, acceleration = 80;
 	public RectTransform rec, content_rec;
@@ -215,7 +216,7 @@ public class UserView : MonoBehaviour {
 		for (int i = 0; i < 5; i++) {
 			if(i < average)
 			{
-				stars[i].color = Color.yellow;
+				stars[i].color = starsColor;
 			}
 			else
 			{

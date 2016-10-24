@@ -6,7 +6,7 @@ public class Portrait : Singleton<Portrait> {
 
 	InfoView info_view;
 	RawImage image;
-	Image fade;
+	public Image fade;
 
 	void Start()
 	{

@@ -64,7 +64,9 @@ public class InfoView : MonoBehaviour {
 	void CheckSwipe()
 	{
 		if(Vector2.Distance(mouse_pos,end_pos) < 50)
+		{
 			return;
+		}
 		if (Camera.main.ScreenToWorldPoint (Input.mousePosition).y <= ref_y.transform.position.y)
 			return;
 
@@ -112,8 +114,11 @@ public class InfoView : MonoBehaviour {
 			} else {
 				left_arrow.SetActive (true);
 			}
-
 			ResizeImage (current_image_shown);
+			if(Portrait.Instance.fade.enabled)
+			{
+				Portrait.Instance.Close ();
+			}
 		}
 	}
 
@@ -129,6 +134,10 @@ public class InfoView : MonoBehaviour {
 				right_arrow.SetActive (true);
 			}
 			ResizeImage (current_image_shown);
+			if(Portrait.Instance.fade.enabled)
+			{
+				Portrait.Instance.Close ();
+			}
 		}
 	}
 
