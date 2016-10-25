@@ -6,7 +6,7 @@ public class User : MonoBehaviour {
 	public string user_name;
 	public string email;
 
-	public static string staging_url = "http://api.soundsmarket.com/";
+	public static string staging_url = "http://api-staging.soundsmarket.com/";
 	public static string local_url = "http://sounds-market.dev/";
 	public static bool local = false, guest;
 	public bool is_local, is_guest;
