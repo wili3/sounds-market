@@ -18,6 +18,7 @@ public class OpenOfferCreationView : MonoBehaviour  ,IPointerClickHandler {
 		
 		oc_view_controller.clear_button.gameObject.SetActive(true);
 		oc_view_controller.sold_button.gameObject.SetActive (false);
+		oc_view_controller.edit_button.gameObject.SetActive(false);
 		oc_view_controller.submit_button.gameObject.SetActive (true);
 
 		
